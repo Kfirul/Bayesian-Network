@@ -35,8 +35,60 @@ public class BayesianNet {
 
 
     public String simpleDeduction(ArrayList<String> query){
+        ArrayList<Variable> hidden=new ArrayList<Variable>();
+        for (Variable v:arrVariables) {
+            boolean found=false;
+            for (int i=0;i< query.size();i=i+2) {
+                if(v.getName().equals(query.get(i)))
+                    found = true;
 
-        return ""+this.getVariableByName(query.get(0)).getCpt().getProbNum(this.getVariableByName(query.get(0)).getCpt().getOutcomesArr(query));
+            }
+            if(!found)
+                hidden.add(v);
+
+        }
+
+        int mul=1;
+        for(Variable v:hidden)
+            mul=mul*v.getOutcomes().size();
+
+        ArrayList<ArrayList<String>> contain=new ArrayList<ArrayList<String>>();
+
+        for(int i=0;i<mul;i++){
+            contain.add(new ArrayList<String>(query));
+        }
+
+        int loop=mul;
+        for(Variable v:hidden) {
+            loop = loop / v.getOutcomes().size();
+            int loopPerOutcome = loop;
+            int indexOutcome = 0;
+            for (int i = 0; i < mul; i++) {
+                contain.get(i).add(v.getName());
+                contain.get(i).add(v.getOutcomes().get(indexOutcome));
+                loopPerOutcome--;
+                if (loopPerOutcome == 0) {
+                    loopPerOutcome = loop;
+                    indexOutcome++;
+                    if (indexOutcome == v.getOutcomes().size())
+                        indexOutcome = 0;
+                }
+            }
+        }
+        //System.out.println(contain);
+            double simpleDec=0;
+            for(ArrayList<String>prob:contain){
+                double mulEachConatin=1.0;
+                for(Variable v:arrVariables){
+                    mulEachConatin= mulEachConatin*v.getCpt().getProbNum( v.getCpt().getOutcomesArr(prob));
+                }
+                System.out.println(mulEachConatin);
+                simpleDec=simpleDec+mulEachConatin;
+            }
+
+
+
+        return ""+simpleDec;
     }
 
     public void setBayesianNet(ArrayList<Variable> bayesianNet) {

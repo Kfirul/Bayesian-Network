@@ -52,10 +52,26 @@ public class CPT {
     public void setCpt(String[][] cpt) {
         this.cpt = cpt;
     }
+
+
+    public String[] getOutcomesArr(ArrayList<String>probs){
+        String []outcomesArr=new String[cpt[0].length-1];
+        for(int j=0;j<cpt[0].length-1;j++) {
+            for (int i = 0; i < probs.size(); i++) {
+                if (probs.get(i).equals(cpt[0][j]))
+                    outcomesArr[j]=probs.get(i+1);
+            }
+        }
+        return outcomesArr;
+    }
+
     public double getProbNum(String[] outcomesArr){
         for(int i=1;i< cpt.length;i++){
-            if(equalArr(outcomesArr,cpt[i]))
-                return Double.parseDouble(cpt[i][cpt[0].length-1]);;
+            if(equalArr(outcomesArr,cpt[i])) {
+                System.out.println(cpt[i][cpt[0].length - 1]);
+                return Double.parseDouble(cpt[i][cpt[0].length - 1]);
+
+            }
         }
         return -1;
     }
@@ -66,16 +82,7 @@ public class CPT {
         }
         return true;
     }
-    public String[] getOutcomesArr(ArrayList<String>probs){
-        String []outcomesArr=new String[probs.size()/2];
-        for(int j=0;j<cpt[0].length;j++) {
-            for (int i = 0; i < probs.size(); i++) {
-                if (probs.get(i).equals(cpt[0][j]))
-                    outcomesArr[j]=probs.get(i+1);
-            }
-        }
-        return outcomesArr;
-    }
+
 
 
 

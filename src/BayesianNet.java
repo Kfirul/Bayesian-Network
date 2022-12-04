@@ -45,27 +45,53 @@ public class BayesianNet {
             }
             if(!found)
                 hidden.add(v);
-
         }
 
-        int mul=1;
-        for(Variable v:hidden)
-            mul=mul*v.getOutcomes().size();
+        //Calculate the result of the original query
+        ArrayList<ArrayList<String>> combineOriginal=combination(hidden,query);
+        ArrayList<Double>results=new ArrayList<Double>();
+        results.add(resultsCombine(combineOriginal));
+        Variable theQuery=getVariableByName(query.get(0));
 
-        ArrayList<ArrayList<String>> contain=new ArrayList<ArrayList<String>>();
+        //Calculate the result of each combine by the outcomes of the Variable query
+        for(int i=0;i<theQuery.getOutcomes().size();i++) {
+            if (!theQuery.getOutcomes().get(i).equals(query.get(1))) {
+                query.set(1, theQuery.getOutcomes().get(i));
+                ArrayList<ArrayList<String>> combine = combination(hidden, query);
+               double simpleDec=resultsCombine(combine);
+               results.add(simpleDec);
+            }
+        }
+        //Sum all the combination results for each outcome of the query
+       double sumCombination=0;
+        for(int i=0;i<results.size();i++)
+            sumCombination=sumCombination+results.get(i);
 
-        for(int i=0;i<mul;i++){
-            contain.add(new ArrayList<String>(query));
+        double normalize=results.get(0)/sumCombination;
+
+        return ""+normalize+","+((combineOriginal.size()-1)*theQuery.getOutcomes().size()+theQuery.getOutcomes().size()-1)+","+((arrVariables.size()-1)*combineOriginal.size()*theQuery.getOutcomes().size());
+    }
+
+    // Do combination by the hidden variables outcomes
+    public ArrayList<ArrayList<String>> combination(ArrayList<Variable> hidden,ArrayList<String> query) {
+        int mul = 1;
+        for (Variable v : hidden)
+            mul = mul * v.getOutcomes().size();
+
+        ArrayList<ArrayList<String>> combine = new ArrayList<ArrayList<String>>();
+
+        for (int i = 0; i < mul; i++) {
+            combine.add(new ArrayList<String>(query));
         }
 
-        int loop=mul;
-        for(Variable v:hidden) {
+        int loop = mul;
+        for (Variable v : hidden) {
             loop = loop / v.getOutcomes().size();
             int loopPerOutcome = loop;
             int indexOutcome = 0;
             for (int i = 0; i < mul; i++) {
-                contain.get(i).add(v.getName());
-                contain.get(i).add(v.getOutcomes().get(indexOutcome));
+                combine.get(i).add(v.getName());
+                combine.get(i).add(v.getOutcomes().get(indexOutcome));
                 loopPerOutcome--;
                 if (loopPerOutcome == 0) {
                     loopPerOutcome = loop;
@@ -75,20 +101,19 @@ public class BayesianNet {
                 }
             }
         }
-        //System.out.println(contain);
-            double simpleDec=0;
-            for(ArrayList<String>prob:contain){
-                double mulEachConatin=1.0;
-                for(Variable v:arrVariables){
-                    mulEachConatin= mulEachConatin*v.getCpt().getProbNum( v.getCpt().getOutcomesArr(prob));
-                }
-                System.out.println(mulEachConatin);
-                simpleDec=simpleDec+mulEachConatin;
+        return combine;
+    }
+    //Return the result of combination
+    public double resultsCombine(ArrayList<ArrayList<String>> combine){
+        double simpleDec=0;
+        for(ArrayList<String>prob:combine){
+            double mulEachConatin=1.0;
+            for(Variable v:arrVariables){
+                mulEachConatin= mulEachConatin*v.getCpt().getProbNum(v.getCpt().getOutcomesArr(prob));
             }
-
-
-
-        return ""+simpleDec;
+            simpleDec=simpleDec+mulEachConatin;
+        }
+        return simpleDec;
     }
 
     public void setBayesianNet(ArrayList<Variable> bayesianNet) {

@@ -67,11 +67,8 @@ public class CPT {
 
     public double getProbNum(String[] outcomesArr){
         for(int i=1;i< cpt.length;i++){
-            if(equalArr(outcomesArr,cpt[i])) {
-                System.out.println(cpt[i][cpt[0].length - 1]);
+            if(equalArr(outcomesArr,cpt[i]))
                 return Double.parseDouble(cpt[i][cpt[0].length - 1]);
-
-            }
         }
         return -1;
     }

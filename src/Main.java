@@ -44,8 +44,8 @@ public class Main {
 
          String str=t.readText("C:\\Users\\USER\\Desktop\\input.txt");
         //System.out.println(t.queryValues(str));
-        //System.out.println(net.simpleDeduction(t.queryValues(str)));
-        System.out.println(0.002*0.001*0.95*0.9*0.7);
+        System.out.println(net.simpleDeduction(t.queryValues(str)));
+        //System.out.println(0.002*0.001*0.95*0.9*0.7);
     }
        // System.out.println(xmlFile.getTables(a.get(2)).size());
 

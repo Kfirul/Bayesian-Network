@@ -35,6 +35,19 @@ public class BayesianNet {
 
 
     public String simpleDeduction(ArrayList<String> query){
+        //If the Information and the result of the query is already given in one of the - CPT
+        boolean same=false,querySame=true;
+        for(int i=2;i< query.size();i=i+2){
+            for(int j=0;j<getVariableByName(query.get(0)).getListOfFathers().size();j++){
+                if(query.get(i).equals(getVariableByName(query.get(0)).getListOfFathers().get(j)))
+                    same =true;
+            }
+            if(!same)
+                querySame=false;
+        }
+        if(querySame)
+            return ""+getVariableByName(query.get(0)).getCpt().getProbNum(getVariableByName(query.get(0)).getCpt().getOutcomesArr(query))+",0,0";
+
         ArrayList<Variable> hidden=new ArrayList<Variable>();
         for (Variable v:arrVariables) {
             boolean found=false;

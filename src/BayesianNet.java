@@ -11,6 +11,7 @@ public class BayesianNet {
     public BayesianNet(BayesianNet bayNet){
         this.arrVariables = new ArrayList<Variable>(bayNet.arrVariables);
     }
+
     public BayesianNet(ReadXmlFile xmlFile){
         ArrayList<String>tempNames=xmlFile.getVariableName();
 
@@ -81,7 +82,9 @@ public class BayesianNet {
             sumCombination=sumCombination+results.get(i);
 
         double normalize=results.get(0)/sumCombination;
-
+        normalize=100000*normalize;
+        normalize=Math.round(normalize);
+        normalize=normalize/100000;
         return ""+normalize+","+((combineOriginal.size()-1)*theQuery.getOutcomes().size()+theQuery.getOutcomes().size()-1)+","+((arrVariables.size()-1)*combineOriginal.size()*theQuery.getOutcomes().size());
     }
 

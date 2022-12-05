@@ -55,7 +55,7 @@ public class CPT {
 
 
     public String[] getOutcomesArr(ArrayList<String>probs){
-
+        //System.out.println(probs);
         String []outcomesArr=new String[cpt[0].length-1];
         for(int j=0;j<cpt[0].length-1;j++) {
             for (int i = 0; i < probs.size(); i++) {
@@ -63,7 +63,6 @@ public class CPT {
                     outcomesArr[j]=probs.get(i+1);
             }
         }
-
         return outcomesArr;
     }
 
@@ -76,7 +75,6 @@ public class CPT {
         return -1;
     }
     public boolean equalArr(String[]a,String[]b){
-
         for(int i=0;i<a.length;i++){
             if(!a[i].equals(b[i]))
                 return false;

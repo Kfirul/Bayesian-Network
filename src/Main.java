@@ -24,8 +24,8 @@ public class Main {
 ////            System.out.println("Tables : "+d);
 ////            System.out.println("----------------");
 //
-             BayesianNet net=new BayesianNet(xmlFile2);
-         //System.out.println( net.getVariableByName("D1").getCpt());
+             BayesianNet net=new BayesianNet(xmlFile);
+        // System.out.println( net.getVariableByName("D1").getCpt());
 //        ArrayList<String>z=new ArrayList<>();
 //        z.add("B");
 //        z.add("T");
@@ -44,8 +44,8 @@ public class Main {
 
          String str=t.readText("C:\\Users\\USER\\Desktop\\input.txt");
         //System.out.println(t.queryValues(str));
-        //System.out.println(net.simpleDeduction(t.queryValues(str)));
-        System.out.println(net.simpleDeduction(t.queryValues("P(D1=T|C2=v1,C3=F),1")));
+        System.out.println(net.simpleDeduction(t.queryValues(str)));
+        //System.out.println(net.simpleDeduction(t.queryValues("P(B0=v3|C3=T,B2=F,C2=v3),1")));
 
         //System.out.println(0.002*0.001*0.95*0.9*0.7);
     }

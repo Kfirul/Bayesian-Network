@@ -36,22 +36,26 @@ public class BayesianNet {
 
 
     public String simpleDeduction(ArrayList<String> query){
+        System.out.println(query);
+        //System.out.println(query);
         //If the Information and the result of the query is already given in one of the - CPT
-       if(query.size()/2==getVariableByName(query.get(0)).getListOfFathers().size()+1){
-            boolean same = false, querySame = true;
-            for (int j = 0; j < getVariableByName(query.get(0)).getListOfFathers().size(); j++) {
+       if(query.size()/2==getVariableByName(query.get(0)).getListOfFathers().size()+1) {
+           boolean same = false, querySame = true;
+           for (int j = 0; j < getVariableByName(query.get(0)).getListOfFathers().size(); j++) {
+                same=false;
+               for (int i = 2; i < query.size(); i = i + 2) {
 
-                for (int i = 2; i < query.size(); i = i + 2) {
+                   if (query.get(i).equals(getVariableByName(query.get(0)).getListOfFathers().get(j)))
+                       same = true;
+               }
+               if (!same)
+                   querySame = false;
+           }
+           if (querySame) {
+               return "" + getVariableByName(query.get(0)).getCpt().getProbNum(getVariableByName(query.get(0)).getCpt().getOutcomesArr(query)) + ",0,0";
+           }
+       }
 
-                    if (query.get(i).equals(getVariableByName(query.get(0)).getListOfFathers().get(j)))
-                        same = true;
-                }
-                if (!same)
-                    querySame = false;
-            }
-            if (querySame)
-                return "" + getVariableByName(query.get(0)).getCpt().getProbNum(getVariableByName(query.get(0)).getCpt().getOutcomesArr(query)) + ",0,0";
-        }
         ArrayList<Variable> hidden=new ArrayList<Variable>();
         for (Variable v:arrVariables) {
             boolean found=false;
@@ -70,15 +74,17 @@ public class BayesianNet {
         results.add(resultsCombine(combineOriginal));
         Variable theQuery=getVariableByName(query.get(0));
 
-        //Calculate the result of each combine by the outcomes of the Variable query
+        //Calculate the result of each combine by the outcomes of the Variable query except the original
         for(int i=0;i<theQuery.getOutcomes().size();i++) {
             if (!theQuery.getOutcomes().get(i).equals(query.get(1))) {
-                query.set(1, theQuery.getOutcomes().get(i));
-                ArrayList<ArrayList<String>> combine = combination(hidden, query);
+                ArrayList<String> completequery= new ArrayList<String>(query);
+                completequery.set(1, theQuery.getOutcomes().get(i));
+                ArrayList<ArrayList<String>> combine = combination(hidden, completequery);
                double simpleDec=resultsCombine(combine);
                results.add(simpleDec);
             }
         }
+
         //Sum all the combination results for each outcome of the query
        double sumCombination=0;
         for(int i=0;i<results.size();i++)
@@ -120,6 +126,7 @@ public class BayesianNet {
                 }
             }
         }
+
         return combine;
     }
     //Return the result of combination

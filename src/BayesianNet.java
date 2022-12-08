@@ -92,9 +92,9 @@ public class BayesianNet {
         //Calculate the result of each combine by the outcomes of the Variable query except the original
         for(int i=0;i<theQuery.getOutcomes().size();i++) {
             if (!theQuery.getOutcomes().get(i).equals(query.get(1))) {
-                ArrayList<String> completequery= new ArrayList<String>(query);
-                completequery.set(1, theQuery.getOutcomes().get(i));
-                ArrayList<ArrayList<String>> combine = combination(hidden, completequery);
+                ArrayList<String> complementary= new ArrayList<String>(query);
+                complementary.set(1, theQuery.getOutcomes().get(i));
+                ArrayList<ArrayList<String>> combine = combination(hidden, complementary);
                double simpleDec=resultsCombine(combine);
                results.add(simpleDec);
             }
@@ -111,6 +111,11 @@ public class BayesianNet {
         normalize=normalize/100000;
         return ""+normalize+","+((combineOriginal.size()-1)*theQuery.getOutcomes().size()+theQuery.getOutcomes().size()-1)+","+((arrVariables.size()-1)*combineOriginal.size()*theQuery.getOutcomes().size());
     }
+
+    /**
+     *
+     * Create all the combination by the hidden Variables outcomes
+     */
 
     // Do combination by the hidden variables outcomes
     public ArrayList<ArrayList<String>> combination(ArrayList<Variable> hidden,ArrayList<String> query) {
@@ -147,9 +152,9 @@ public class BayesianNet {
 
     /**
      *
-     * 
+     * Return the result of combination by their CPT
      */
-    //Return the result of combination
+
     public double resultsCombine(ArrayList<ArrayList<String>> combine){
         double simpleDec=0;
         for(ArrayList<String>prob:combine){
@@ -174,6 +179,10 @@ public class BayesianNet {
         return false;
     }
 
+    /**
+     *Return if variable exist in the bayesian network
+     */
+
     public boolean isExistByName(String name ){
         if(arrVariables!=null) {
             for (Variable v1 : arrVariables) {
@@ -188,6 +197,11 @@ public class BayesianNet {
         if(!isExist(v))
         arrVariables.add(v);
     }
+
+    /**
+     *
+     * Return the variable by his name
+     */
     public Variable getVariableByName(String name){
         for (Variable v1:arrVariables) {
             if(v1.getName().equals(name))

@@ -2,15 +2,24 @@ import java.util.ArrayList;
 import java.util.HashMap;
 
 public class Factor {
-    public static void main(String[] args) {
-       HashMap<String, Integer> map = new HashMap<>();
+    private ArrayList<String> varFactor=new ArrayList<String>();
+    private ArrayList<Double> prob=new ArrayList<Double>();
+    private ArrayList<ArrayList<String>> factor=new ArrayList<ArrayList<String>>();
 
 
-        map.put("vishal", 10);
-        map.put("sachin", 30);
-        map.put("vaibhav", 20);
-        map.put("aba",10);
+   public Factor(Variable v){
+       String [][] cptCopy=v.getCpt().gettruthTable();
+       for(int j=0;j<cptCopy[0].length-1;j++){
+            varFactor.add(cptCopy[0][j]);
+       }
 
-        System.out.println(map);
-    }
+       for(int i=1;i<cptCopy[i].length;i++){
+           prob.add(Double.parseDouble(cptCopy[i][cptCopy.length-1]));
+       }
+       for(int i=1;i<cptCopy.length;i++){
+           for (int j=0;j<cptCopy[0].length-1;j++){
+               factor.get(i-1).add(cptCopy[i][j]);
+           }
+       }
+   }
 }

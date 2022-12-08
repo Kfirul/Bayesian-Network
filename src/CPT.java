@@ -3,63 +3,63 @@ import java.util.Arrays;
 
 public class CPT {
     
-    private String[][]cpt;
+    private String[][]truthTable;
     private ArrayList<String> tables=new ArrayList<String>();
 
     public CPT(String nameVar ,ArrayList<String> outcomes,ArrayList<Variable> fathers,ArrayList<String> tables){
         this.tables=new ArrayList<String>(tables);
         int loops= tables.size();
         int indexFather=0;
-        cpt=new String [tables.size()+1][fathers.size()+2];
+        truthTable=new String [tables.size()+1][fathers.size()+2];
         for(int name=0;name<fathers.size();name++){
-            cpt[0][name]=fathers.get(name).getName();
+            truthTable[0][name]=fathers.get(name).getName();
         }
 
-        for(int j=0;j<cpt[0].length-2;j++){
+        for(int j=0;j<truthTable[0].length-2;j++){
             loops=loops/fathers.get(indexFather).getOutcomes().size();
             int loopOutcome=loops;
             int indexOutcome=0;
-            for(int i=1;i<cpt.length;i++){
+            for(int i=1;i<truthTable.length;i++){
                 if(loopOutcome==0){
                     indexOutcome++;
                     if(indexOutcome==fathers.get(indexFather).getOutcomes().size())
                         indexOutcome=0;
                     loopOutcome=loops;
                 }
-                cpt[i][j]=fathers.get(indexFather).getOutcomes().get(indexOutcome);
+                truthTable[i][j]=fathers.get(indexFather).getOutcomes().get(indexOutcome);
                 loopOutcome--;
             }
             indexFather++;
         }
-        cpt[0][cpt[0].length - 2]=nameVar;
+        truthTable[0][truthTable[0].length - 2]=nameVar;
         int indexOutcome=0;
-        for(int i=1;i<cpt.length;i++) {
-            cpt[i][cpt[0].length - 2] = outcomes.get(indexOutcome);
+        for(int i=1;i<truthTable.length;i++) {
+            truthTable[i][truthTable[0].length - 2] = outcomes.get(indexOutcome);
             indexOutcome++;
             if (indexOutcome == outcomes.size())
                 indexOutcome = 0;
         }
-        cpt[0][cpt[0].length - 1]="Prob";
-        for(int i=1;i<cpt.length;i++) {
-            cpt[i][cpt[0].length - 1] = tables.get(i-1);
+        truthTable[0][truthTable[0].length - 1]="Prob";
+        for(int i=1;i<truthTable.length;i++) {
+            truthTable[i][truthTable[0].length - 1] = tables.get(i-1);
         }
     }
 
-    public String[][] getCpt() {
-        return cpt;
+    public String[][] gettruthTable() {
+        return truthTable;
     }
 
-    public void setCpt(String[][] cpt) {
-        this.cpt = cpt;
+    public void setCpt(String[][] truthTable) {
+        this.truthTable = truthTable;
     }
 
 
     public String[] getOutcomesArr(ArrayList<String>probs){
 
-        String []outcomesArr=new String[cpt[0].length-1];
-        for(int j=0;j<cpt[0].length-1;j++) {
+        String []outcomesArr=new String[truthTable[0].length-1];
+        for(int j=0;j<truthTable[0].length-1;j++) {
             for (int i = 0; i < probs.size(); i++) {
-                if (probs.get(i).equals(cpt[0][j]))
+                if (probs.get(i).equals(truthTable[0][j]))
                     outcomesArr[j]=probs.get(i+1);
             }
         }
@@ -67,9 +67,9 @@ public class CPT {
     }
 
     public double getProbNum(String[] outcomesArr){
-        for(int i=1;i< cpt.length;i++){
-            if(equalArr(outcomesArr,cpt[i]))
-                return Double.parseDouble(cpt[i][cpt[0].length - 1]);
+        for(int i=1;i< truthTable.length;i++){
+            if(equalArr(outcomesArr,truthTable[i]))
+                return Double.parseDouble(truthTable[i][truthTable[0].length - 1]);
 
         }
         return 0;
@@ -97,8 +97,8 @@ public class CPT {
     @Override
     public String toString() {
 
-        for (int i = 0; i < cpt.length; i++) {
-            System.out.println(Arrays.toString(cpt[i]));
+        for (int i = 0; i < truthTable.length; i++) {
+            System.out.println(Arrays.toString(truthTable[i]));
         }
         return"";
     }

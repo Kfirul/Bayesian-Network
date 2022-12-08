@@ -39,4 +39,14 @@ public class ReadTxtFile {
         queryArr.add(str); //add the last outcome
         return queryArr;
     }
+
+    /**
+     *
+     * @param query
+     * @return the function we need to use
+     *
+     */
+    public char whichAlgo(String query){
+        return query.charAt(query.length()-1);
+    }
 }

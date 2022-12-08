@@ -31,30 +31,45 @@ public class BayesianNet {
         for(Variable v: arrVariables) {
             v.createCPT();
         }
-
         }
 
+    /**
+     * The function receive query and check if the query is already at cpt we will return the result at cpt
+     * If not, we will use appropriate function according to the input
+     * @param query
+     * @param func
+     *
+     */
+    public String chooseAlgo(ArrayList<String> query,char func){
+        //If the Information and the result of the query is already given in one of the - CPT
+        if(query.size()/2==getVariableByName(query.get(0)).getListOfFathers().size()+1) {
+            boolean same = false, querySame = true;
+            for (int j = 0; j < getVariableByName(query.get(0)).getListOfFathers().size(); j++) {
+                same=false;
+                for (int i = 2; i < query.size(); i = i + 2) {
+
+                    if (query.get(i).equals(getVariableByName(query.get(0)).getListOfFathers().get(j)))
+                        same = true;
+                }
+                if (!same)
+                    querySame = false;
+            }
+            if (querySame) {
+                return "" + getVariableByName(query.get(0)).getCpt().getProbNum(getVariableByName(query.get(0)).getCpt().getOutcomesArr(query)) + ",0,0";
+            }
+        }
+        if(func=='1') return simpleDeduction(query);
+        else if (func=='2') return "function 2";
+        return "function 3";
+    }
+
+    /**
+     *
+     *
+     *
+     */
 
     public String simpleDeduction(ArrayList<String> query){
-        System.out.println(query);
-        //System.out.println(query);
-        //If the Information and the result of the query is already given in one of the - CPT
-       if(query.size()/2==getVariableByName(query.get(0)).getListOfFathers().size()+1) {
-           boolean same = false, querySame = true;
-           for (int j = 0; j < getVariableByName(query.get(0)).getListOfFathers().size(); j++) {
-                same=false;
-               for (int i = 2; i < query.size(); i = i + 2) {
-
-                   if (query.get(i).equals(getVariableByName(query.get(0)).getListOfFathers().get(j)))
-                       same = true;
-               }
-               if (!same)
-                   querySame = false;
-           }
-           if (querySame) {
-               return "" + getVariableByName(query.get(0)).getCpt().getProbNum(getVariableByName(query.get(0)).getCpt().getOutcomesArr(query)) + ",0,0";
-           }
-       }
 
         ArrayList<Variable> hidden=new ArrayList<Variable>();
         for (Variable v:arrVariables) {
@@ -129,6 +144,11 @@ public class BayesianNet {
 
         return combine;
     }
+
+    /**
+     *
+     * 
+     */
     //Return the result of combination
     public double resultsCombine(ArrayList<ArrayList<String>> combine){
         double simpleDec=0;

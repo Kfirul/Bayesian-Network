@@ -26,25 +26,6 @@ public class ReadXmlFile {
     }
 
 
-    public void getListVariable() {
-        try{
-        NodeList variableNodes = doc.getElementsByTagName("VARIABLE");
-        for (int i = 0; i < variableNodes.getLength(); i++) {
-            Node variableNode = variableNodes.item(i);
-            if (variableNode.getNodeType() == Node.ELEMENT_NODE) {
-                Element variableElement = (Element) variableNode;
-                String name = variableElement.getElementsByTagName("NAME").item(0).getTextContent();
-                System.out.println("VARIABLE NAME = " + name);
-                NodeList outcomesList = variableElement.getElementsByTagName("OUTCOME");
-                for (int j = 0; j < outcomesList.getLength(); j++)
-                    System.out.println("OUTCOME " + (j + 1) + " : " + outcomesList.item(j).getTextContent());
-               // bayesianNet.set(new Variable(name));
-            }}}
-        catch (Exception e){
-                e.printStackTrace();
-            }
-        }
-
 
     public ArrayList<String> getVariableName() {
         ArrayList<String> names = new ArrayList<String>();

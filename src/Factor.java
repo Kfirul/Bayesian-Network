@@ -1,21 +1,17 @@
 import java.util.ArrayList;
 
 public class Factor {
-    private ArrayList<String> varFactor=new ArrayList<String>();
+    private ArrayList<Variable> varFactor=new ArrayList<Variable>();
     private ArrayList<Double> prob=new ArrayList<Double>();
     private ArrayList<ArrayList<String>> factorTab=new ArrayList<ArrayList<String>>();
 
-    public Factor(){
-        varFactor=new ArrayList<String>();
-        prob=new ArrayList<Double>();
-        factorTab=new ArrayList<ArrayList<String>>();
-    }
 
    public Factor(Variable v){
        String [][] cptCopy=v.getCpt().getTruthTable();
-       for(int j=0;j<cptCopy[0].length-1;j++){
-            varFactor.add(cptCopy[0][j]);
+       for(int j=0;j<v.getFathers().size();j++){
+            varFactor.add(v.getFathers().get(j));
        }
+       varFactor.add(v);
 
        for (String s:v.getTables()) {
            prob.add(Double.parseDouble(s));
@@ -28,6 +24,102 @@ public class Factor {
            }
        }
    }
+   public Factor(Factor f1, Factor f2){
+
+        //Create new var factor arr of union between f1 & f2
+        this.varFactor=new ArrayList<>(f1.getVarFactor());
+        for(Variable v:f2.varFactor){
+            boolean found=false;
+            for(Variable v2: this.varFactor){
+                if(v2.getName().equals(v.getName()))
+                    found = true;
+            }
+            if(!found)
+                varFactor.add(v);
+        }
+
+        //Calculate the size of the table
+        int tabSize=1;
+        for(int i=0;i< varFactor.size();i++)
+            tabSize=tabSize* varFactor.get(i).getOutcomes().size();
+
+        //Initializes the array so that there is 1 in each cell
+        for(int i=0;i<tabSize;i++)
+            prob.add(1.0);
+
+        //Initializes the table
+        for(int i=0;i<tabSize;i++)
+            factorTab.add(new ArrayList<String>());
+
+        int loops=tabSize;
+       int indexVar=0;
+       for(int j=0;j<varFactor.size();j++){
+           loops=loops/varFactor.get(indexVar).getOutcomes().size();
+           int loopOutcome=loops;
+           int indexOutcome=0;
+           for(int i=0;i<tabSize;i++){
+               if(loopOutcome==0){
+                   indexOutcome++;
+                   if(indexOutcome==varFactor.get(indexVar).getOutcomes().size())
+                       indexOutcome=0;
+                   loopOutcome=loops;
+               }
+               factorTab.get(i).add(varFactor.get(indexVar).getOutcomes().get(indexOutcome));
+               loopOutcome--;
+           }
+           indexVar++;
+       }
+       //Calculate the prob
+
+       //Add prob of f1
+
+       ArrayList<Integer>arrIndex=createArrIndex(f1);
+       probFit(f1,arrIndex);
+
+       //Add prob of f2
+
+       arrIndex=createArrIndex(f2);
+       probFit(f2,arrIndex);
+
+   }
+    public void probFit(Factor f,ArrayList<Integer> arrIndex){
+        for(int i=0;i<f.getFactorTab().size();i++){
+            for(int j=0;j<this.factorTab.size();j++) {
+
+                if (equalArrByIndex(arrIndex,f.factorTab.get(i),this.factorTab.get(j)))
+                    this.prob.set(j,this.prob.get(j)*f.getProb().get(i));
+            }
+        }
+    }
+
+    /**
+     * Check if arrays are equal by specif index
+     * @param arrIndex the specif index
+     * @param arr to compare
+     * @param arrFromTab to compare
+     * @return true if equals otherwise false
+     */
+
+
+    public boolean equalArrByIndex(ArrayList<Integer>arrIndex,ArrayList<String> arr,ArrayList<String>arrFromTab){
+       ArrayList<String> tempArr=new ArrayList<>();
+       int j=0;
+       for(int i=0;i<arrFromTab.size()&&j<arr.size();i++){
+           if (i==arrIndex.get(j)) {
+               tempArr.add(arrFromTab.get(i));
+               j++;
+           }
+           }
+               if(tempArr.equals(arr))
+                   return true;
+       return false;
+   }
+  public ArrayList<Integer> createArrIndex(Factor f){
+      ArrayList<Integer>arrIndex=new ArrayList<>();
+      for (int i=0;i<f.getVarFactor().size();i++)
+          arrIndex.add(indexVarName(f.getVarFactor().get(i).getName()));
+      return arrIndex;
+  }
 
     /**
      * remove all the options that not equal to eviOutcome
@@ -48,6 +140,7 @@ public class Factor {
             removeCol(index);
         }
    }
+
     public void eliminate(String varName)  {
        int indexVar=indexVarName(varName);
        varFactor.remove(indexVar);
@@ -90,7 +183,7 @@ public class Factor {
      */
             public int indexVarName (String varName) {
                 for (int i = 0; i < varFactor.size(); i++) {
-                    if (varName.equals(varFactor.get(i)))
+                    if (varName.equals(varFactor.get(i).getName()))
                         return i;
                 }
                 return -1;
@@ -112,16 +205,20 @@ public class Factor {
                 this.factorTab = factorTab;
             }
 
-            public ArrayList<String> getVarFactor () {
+            public ArrayList<Variable> getVarFactor () {
                 return varFactor;
             }
 
-            public void setVarFactor (ArrayList < String > varFactor) {
+            public void setVarFactor (ArrayList < Variable > varFactor) {
                 this.varFactor = varFactor;
             }
 
             public String toString () {
-                System.out.println("Titels: " + varFactor + "\n probs: " + prob + "\n table:\n");
+                System.out.println("Titels: ");
+                for (Variable v:varFactor) {
+                    System.out.print(v.getName()+"  ");
+                }
+                System.out.println("\n probs: " + prob + "\n table:\n");
                 for (ArrayList<String> f : factorTab) {
                     System.out.println(f);
 

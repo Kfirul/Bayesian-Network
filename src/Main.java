@@ -6,7 +6,7 @@ import java.io.IOException;
 import java.util.ArrayList;
 
 public class Main {
-    public static void main(String[] args) throws ParserConfigurationException, IOException, SAXException {
+    public static void main(String[] args) throws Exception {
         ReadXmlFile xmlFile = new ReadXmlFile("C:\\Users\\USER\\Desktop\\alarm_net.xml");
         ReadXmlFile xmlFile2 = new ReadXmlFile("C:\\Users\\USER\\Desktop\\big_net.xml");
 
@@ -24,7 +24,7 @@ public class Main {
 ////            System.out.println("Tables : "+d);
 ////            System.out.println("----------------");
 //
-             BayesianNet net=new BayesianNet(xmlFile2);
+             BayesianNet net=new BayesianNet(xmlFile);
         // System.out.println( net.getVariableByName("D1").getCpt());
 //        ArrayList<String>z=new ArrayList<>();
 //        z.add("B");
@@ -44,9 +44,21 @@ public class Main {
 
          String str=t.readText("C:\\Users\\USER\\Desktop\\input.txt");
         //System.out.println(t.queryValues(str));
-        //System.out.println(net.simpleDeduction(t.queryValues(str)));
-        System.out.println(net.simpleDeduction(t.queryValues("P(B0=v3|C3=T,B2=F,C2=v3),1")));
-
+       // System.out.println(net.simpleDeduction(t.queryValues(str)));
+       // System.out.println(net.simpleDeduction(t.queryValues("P(J=T|B=T),1")));
+        System.out.println(net.getArrFactor().get(2).getVarFactor());
+        System.out.println(net.getArrFactor().get(2).getFactorTab());
+        System.out.println(net.getArrFactor().get(2).getProb());
+//        System.out.println("--------eliminate-------");
+//        net.getArrFactor().get(2).eliminate("B");
+//        System.out.println(net.getArrFactor().get(2).getVarFactor());
+//        System.out.println(net.getArrFactor().get(2).getFactorTab());
+//        System.out.println(net.getArrFactor().get(2).getProb());
+        System.out.println("-----Evidence Check-----");
+        net.getArrFactor().get(2).removeEvidenceOutcomes("A","T");
+        System.out.println(net.getArrFactor().get(2).getVarFactor());
+        System.out.println(net.getArrFactor().get(2).getFactorTab());
+        System.out.println(net.getArrFactor().get(2).getProb());
         //System.out.println(0.002*0.001*0.95*0.9*0.7);
     }
        // System.out.println(xmlFile.getTables(a.get(2)).size());

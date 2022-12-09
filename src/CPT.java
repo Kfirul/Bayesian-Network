@@ -45,7 +45,7 @@ public class CPT {
         }
     }
 
-    public String[][] gettruthTable() {
+    public String[][] getTruthTable() {
         return truthTable;
     }
 

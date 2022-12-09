@@ -3,6 +3,7 @@ import java.util.ArrayList;
 public class BayesianNet {
 
     private ArrayList<Variable> arrVariables= new ArrayList<Variable>();
+    private ArrayList<Factor> arrFactor=new ArrayList<Factor>();
 
     public BayesianNet(){
         arrVariables=null;
@@ -11,6 +12,8 @@ public class BayesianNet {
     public BayesianNet(BayesianNet bayNet){
         this.arrVariables = new ArrayList<Variable>(bayNet.arrVariables);
     }
+
+
 
     public BayesianNet(ReadXmlFile xmlFile){
         ArrayList<String>tempNames=xmlFile.getVariableName();
@@ -31,6 +34,10 @@ public class BayesianNet {
         for(Variable v: arrVariables) {
             v.createCPT();
         }
+        for (Variable v:arrVariables) {
+            arrFactor.add(new Factor(v));
+
+        }
         }
 
     /**
@@ -41,6 +48,7 @@ public class BayesianNet {
      *
      */
     public String chooseAlgo(ArrayList<String> query,char func){
+
         //If the Information and the result of the query is already given in one of the - CPT
         if(query.size()/2==getVariableByName(query.get(0)).getListOfFathers().size()+1) {
             boolean same = false, querySame = true;
@@ -71,17 +79,7 @@ public class BayesianNet {
 
     public String simpleDeduction(ArrayList<String> query){
 
-        ArrayList<Variable> hidden=new ArrayList<Variable>();
-        for (Variable v:arrVariables) {
-            boolean found=false;
-            for (int i=0;i< query.size();i=i+2) {
-                if(v.getName().equals(query.get(i)))
-                    found = true;
-
-            }
-            if(!found)
-                hidden.add(v);
-        }
+        ArrayList<Variable> hidden=this.getHidden(query);
 
         //Calculate the result of the original query
         ArrayList<ArrayList<String>> combineOriginal=combination(hidden,query);
@@ -110,6 +108,28 @@ public class BayesianNet {
         normalize=Math.round(normalize);
         normalize=normalize/100000;
         return ""+normalize+","+((combineOriginal.size()-1)*theQuery.getOutcomes().size()+theQuery.getOutcomes().size()-1)+","+((arrVariables.size()-1)*combineOriginal.size()*theQuery.getOutcomes().size());
+    }
+
+    /**
+     * Returns the hidden variables for a given query
+     * @param query
+     * @return the hidden array
+     */
+    public ArrayList<Variable> getHidden(ArrayList<String> query){
+        ArrayList<Variable> hidden=new ArrayList<Variable>();
+        for (Variable v:arrVariables) {
+            boolean found=false;
+            for (int i=0;i< query.size();i=i+2) {
+
+                if(v.getName().equals(query.get(i)))
+                    found = true;
+
+            }
+
+            if(!found)
+                hidden.add(v);
+        }
+        return hidden;
     }
 
     /**
@@ -167,6 +187,8 @@ public class BayesianNet {
         return simpleDec;
     }
 
+
+
     public void setBayesianNet(ArrayList<Variable> bayesianNet) {
         this.arrVariables = bayesianNet;
     }
@@ -217,7 +239,13 @@ public class BayesianNet {
     public void setArrVariables(ArrayList<Variable> arrVariables) {
         this.arrVariables = arrVariables;
     }
+    public ArrayList<Factor> getArrFactor() {
+        return arrFactor;
+    }
 
+    public void setArrFactor(ArrayList<Factor> arrFactor) {
+        this.arrFactor = arrFactor;
+    }
     @Override
     public String toString() {
 //        ArrayList<String> a=new ArrayList<String>();

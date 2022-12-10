@@ -67,7 +67,7 @@ public class BayesianNet {
             }
         }
         if(func=='1') return simpleDeduction(query);
-        else if (func=='2') return "function 2";
+        else if (func=='2') return variableEliminationABC();
         return "function 3";
     }
 
@@ -185,6 +185,62 @@ public class BayesianNet {
             simpleDec=simpleDec+mulEachConatin;
         }
         return simpleDec;
+    }
+    public String variableEliminationABC(){
+        return "";
+    }
+
+    /**
+     * This function sort the Factors by their size
+     * If the Factor at the same size the function sort by the ASCII value's variable
+     */
+    public void sortFactorAlphabetical(){
+        for(int i=0;i< arrFactor.size();i++){
+            int min=getASCIIValue(arrFactor.get(i));
+            for(int j=i+1;j< arrFactor.size();j++) {
+                if (getASCIIValue(arrFactor.get(j)) < min) {
+                    min=getASCIIValue(arrFactor.get(j));
+                    swap(arrFactor, i, j);
+                }
+            }
+        }
+        for(int i=0;i< arrFactor.size();i++){
+            int min=arrFactor.get(i).getFactorTab().size()*arrFactor.get(i).getVarFactor().size();
+            for(int j=i+1;j< arrFactor.size();j++) {
+                if (arrFactor.get(j).getFactorTab().size() * arrFactor.get(j).getVarFactor().size() < min) {
+                    min=arrFactor.get(j).getFactorTab().size() * arrFactor.get(j).getVarFactor().size();
+                    swap(arrFactor, i, j);
+                }
+            }
+        }
+
+    }
+
+    /**
+     * The function return the ASCII value of factor by his Variables
+     * @param f the factor
+     * @return the ASCII value
+     */
+    public int getASCIIValue(Factor f){
+        int asciiVal=1;
+        for(Variable v: f.getVarFactor()){
+            for(int i=0;i<v.getName().length();i++){
+            asciiVal=asciiVal*v.getName().charAt(i);
+    }
+        }
+        return asciiVal;
+    }
+
+    /**
+     * The function swap the factors int the array
+     * @param arr the array
+     * @param i index to swap
+     * @param j index to swap
+     */
+    public void swap(ArrayList<Factor> arr,int i,int j){
+        Factor temp=arr.get(i);
+        arr.set(i,arr.get(j));
+        arr.set(j,temp);
     }
 
 

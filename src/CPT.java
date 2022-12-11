@@ -53,7 +53,11 @@ public class CPT {
         this.truthTable = truthTable;
     }
 
-
+    /**
+     * Receives an arraylist of the query and returns an array with the values of Outcomes only
+     * @param probs the arraylist
+     * @return  array with the values of Outcomes only
+     */
     public String[] getOutcomesArr(ArrayList<String>probs){
 
         String []outcomesArr=new String[truthTable[0].length-1];
@@ -66,6 +70,11 @@ public class CPT {
         return outcomesArr;
     }
 
+    /**
+     * Found the coorect row at the CPT and return the appropriate prob
+     * @param outcomesArr the array of outcomes to found
+     * @return the appropriate prob
+     */
     public double getProbNum(String[] outcomesArr){
         for(int i=1;i< truthTable.length;i++){
             if(equalArr(outcomesArr,truthTable[i]))
@@ -74,6 +83,13 @@ public class CPT {
         }
         return 0;
     }
+
+    /**
+     * Equals between to arrays
+     * @param a first array to compare
+     * @param b second array to compare
+     * @return true if equals, otherwise false
+     */
     public boolean equalArr(String[]a,String[]b){
         for(int i=0;i<a.length;i++){
             if(!a[i].equals(b[i]))
@@ -81,18 +97,6 @@ public class CPT {
         }
         return true;
     }
-
-
-
-
-
-
-
-
-
-
-
-
 
     @Override
     public String toString() {

@@ -104,10 +104,8 @@ public class BayesianNet {
             sumCombination=sumCombination+results.get(i);
 
         double normalize=results.get(0)/sumCombination;
-//        normalize=100000*normalize;
-//        normalize=Math.round(normalize);
-//        normalize=normalize/100000;
-        return ""+normalize+","+((combineOriginal.size()-1)*theQuery.getOutcomes().size()+theQuery.getOutcomes().size()-1)+","+((arrVariables.size()-1)*combineOriginal.size()*theQuery.getOutcomes().size());
+
+        return ""+round5(normalize)+","+((combineOriginal.size()-1)*theQuery.getOutcomes().size()+theQuery.getOutcomes().size()-1)+","+((arrVariables.size()-1)*combineOriginal.size()*theQuery.getOutcomes().size());
     }
 
     /**
@@ -200,7 +198,7 @@ public class BayesianNet {
 
         //Sort the hidden array alphabetical
         sortArrAlphabetical(hidden);
-//        System.out.println(arrFactor);
+
         //
         for (Variable hid: hidden){
             ArrayList<Factor> temp= new ArrayList<Factor>();
@@ -235,7 +233,7 @@ public class BayesianNet {
             sortFactorSizeAlphabetical(arrFactor);
         }
 
-        return "function 2: "+normalResult(arrFactor.get(0),query.get(1));
+        return ""+round5(normalResult(arrFactor.get(0),query.get(1)));
     }
 
     /**
@@ -265,6 +263,10 @@ public class BayesianNet {
         return new Factor(f1,f2);
     }
 
+    /**
+     * Sort arr according alphabetical order
+     * @param arr the array to sort
+     */
     public void sortArrAlphabetical(ArrayList<Variable> arr){
         for(int i=0;i< arr.size();i++){
             int min=getASCIIValString(arr.get(i).getName());
@@ -365,7 +367,7 @@ public class BayesianNet {
     }
 
     /**
-     *Return if variable exist in the bayesian network
+     *Return if variable exist in the array
      */
 
     public boolean isExistByName(ArrayList<Variable> arr,String name ){
@@ -385,7 +387,7 @@ public class BayesianNet {
 
     /**
      *
-     * Return the variable by his name
+     * Return the variable by his name at the bayesian network
      */
     public Variable getVariableByName(String name){
         for (Variable v1:arrVariables) {
@@ -393,6 +395,12 @@ public class BayesianNet {
                 return v1;
         }
         return null;
+    }
+    public double round5(double d){
+        d=100000*d;
+        d=Math.round(d);
+        d=d/100000;
+        return d;
     }
 
     public ArrayList<Variable> getArrVariables() {

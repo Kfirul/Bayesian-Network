@@ -104,9 +104,9 @@ public class BayesianNet {
             sumCombination=sumCombination+results.get(i);
 
         double normalize=results.get(0)/sumCombination;
-        normalize=100000*normalize;
-        normalize=Math.round(normalize);
-        normalize=normalize/100000;
+//        normalize=100000*normalize;
+//        normalize=Math.round(normalize);
+//        normalize=normalize/100000;
         return ""+normalize+","+((combineOriginal.size()-1)*theQuery.getOutcomes().size()+theQuery.getOutcomes().size()-1)+","+((arrVariables.size()-1)*combineOriginal.size()*theQuery.getOutcomes().size());
     }
 
@@ -200,7 +200,7 @@ public class BayesianNet {
 
         //Sort the hidden array alphabetical
         sortArrAlphabetical(hidden);
-
+//        System.out.println(arrFactor);
         //
         for (Variable hid: hidden){
             ArrayList<Factor> temp= new ArrayList<Factor>();
@@ -227,9 +227,24 @@ public class BayesianNet {
             temp.get(0).eliminate(hid.getName());
             arrFactor.add(temp.get(0));
         }
+        //Joins the query factors by size until one factor remains
+        while(arrFactor.size()>1){
+            arrFactor.add(join(arrFactor.get(0),arrFactor.get(1)));
+            arrFactor.remove(0);
+            arrFactor.remove(0);
+            sortFactorSizeAlphabetical(arrFactor);
+        }
 
-        return ""+normalResult(arrFactor.get(0),query.get(1));
+        return "function 2: "+normalResult(arrFactor.get(0),query.get(1));
     }
+
+    /**
+     *
+     * @param f
+     * @param qOutcome
+     * @return
+     */
+
     public double normalResult(Factor f,String qOutcome){
         double sum=0;
         double queryOutcome=0;
@@ -238,7 +253,6 @@ public class BayesianNet {
             if(f.getFactorTab().get(i).get(0).equals(qOutcome))
                 queryOutcome=f.getProb().get(i);
         }
-
         return queryOutcome/sum;
     }
     /**

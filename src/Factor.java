@@ -95,8 +95,9 @@ public class Factor {
         for(int i=0;i<f.getFactorTab().size();i++){
             for(int j=0;j<this.factorTab.size();j++) {
 
-                if (equalArrByIndex(arrIndex,f.factorTab.get(i),this.factorTab.get(j)))
-                    this.prob.set(j,this.prob.get(j)*f.getProb().get(i));
+                if (equalArrByIndex(arrIndex, f.factorTab.get(i), this.factorTab.get(j))) {
+                    this.prob.set(j, this.prob.get(j) * f.getProb().get(i));
+                }
             }
         }
     }
@@ -112,11 +113,11 @@ public class Factor {
 
     public boolean equalArrByIndex(ArrayList<Integer>arrIndex,ArrayList<String> arr,ArrayList<String>arrFromTab){
        ArrayList<String> tempArr=new ArrayList<>();
-       int j=0;
-       for(int i=0;i<arrFromTab.size()&&j<arr.size();i++){
-           if (i==arrIndex.get(j)) {
+       for(int j=0;j<arr.size();j++){
+       for(int i=0;i<arrFromTab.size();i++){
+           if (i==arrIndex.get(j))
                tempArr.add(arrFromTab.get(i));
-               j++;
+
            }
            }
                if(tempArr.equals(arr))
@@ -149,6 +150,7 @@ public class Factor {
                 if(!factorTab.get(i).get(index).equals(eviOutcome)){
                     factorTab.remove(i);
                     prob.remove(i);
+                    i--;
                 }
             }
             varFactor.remove(index);
@@ -176,6 +178,7 @@ public class Factor {
                    prob.set(i,sum);
                    prob.remove(j);
                    factorTab.remove(j);
+                   j--;
                }
            }
        }

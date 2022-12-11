@@ -43,20 +43,20 @@ public class Main {
           ReadTxtFile t=new ReadTxtFile();
 
          String str=t.readText("C:\\Users\\USER\\Desktop\\input.txt");
-        //System.out.println(t.queryValues(str));
-       // System.out.println(net.simpleDeduction(t.queryValues(str)));
+      //  System.out.println(t.queryValues(str));
+      //  System.out.println(net.simpleDeduction(t.queryValues(str)));
        // System.out.println(net.simpleDeduction(t.queryValues("P(J=T|B=T),1")));
-      //  System.out.println(net.getArrFactor().get(2));
+       // System.out.println(net.getArrFactor());
    //     System.out.println(net.getArrFactor().get(2).getFactorTab());
       //  System.out.println(net.getArrFactor().get(2).getProb());
-//        System.out.println("--------eliminate-------");
-//        net.getArrFactor().get(2).eliminate("B");
-//        System.out.println(net.getArrFactor().get(2).getVarFactor());
+       // System.out.println("--------eliminate-------");
+  //     net.getArrFactor().get(2).eliminate("B");
+//       System.out.println(net.getArrFactor().get(2).getVarFactor());
 //        System.out.println(net.getArrFactor().get(2).getFactorTab());
 //        System.out.println(net.getArrFactor().get(2).getProb());
-//        System.out.println("-----Evidence Check-----");
-//       net.getArrFactor().get(2).removeEvidenceOutcomes("A","T");
-//       System.out.println(net.getArrFactor().get(2));
+      //  System.out.println("-----Evidence Check-----");
+    //  net.getArrFactor().get(4).removeEvidenceOutcomes("M","F");
+        //System.out.println(net.getArrFactor().get(4));
       //  System.out.println(net.getArrFactor().get(2).getFactorTab());
       //  System.out.println(net.getArrFactor().get(2).getProb());
         //System.out.println(0.002*0.001*0.95*0.9*0.7);
@@ -65,17 +65,24 @@ public class Main {
       //  System.out.println(net.getArrFactor().get(3));
       //  System.out.println("------------\n");
       //  System.out.println(new Factor(net.getArrFactor().get(2),net.getArrFactor().get(3)));
-//        net.getArrFactor().get(3).removeEvidenceOutcomes("J","T");
-//        net.getArrFactor().get(4).removeEvidenceOutcomes("M","T");
-//        Factor f5=new Factor(net.getArrFactor().get(3), net.getArrFactor().get(4));
-//        System.out.println(f5);
-//        Factor f6=new Factor(net.getArrFactor().get(2), f5);
-//        System.out.println(f6);
+       net.getArrFactor().get(3).removeEvidenceOutcomes("J","T");
+        net.getArrFactor().get(4).removeEvidenceOutcomes("M","T");
+        Factor f5=new Factor(net.getArrFactor().get(3), net.getArrFactor().get(4));
+        System.out.println(f5);
+        System.out.println("-----");
+       Factor f6=new Factor(f5,net.getArrFactor().get(2));
+       System.out.println(f6);
 //        System.out.println(net.getArrFactor());
 //        net.sortFactorAlphabetical();
 //        System.out.println("--------\n");
 //        System.out.println(net.getArrFactor());
+   //       ArrayList<Variable> h=net.getHidden(t.queryValues("P(M=T|J=T),1"));
+//        System.out.println(h);
+//        net.sortArrAlphabetical(h);
+//        System.out.println("--------\n");
+//        System.out.println(h);
 
+     //   System.out.println(net.variableEliminationABC(t.queryValues("P(B=T|J=T,M=T),2")));
 
 
     }

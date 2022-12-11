@@ -27,6 +27,7 @@ public class Variable {
       this.tables=new ArrayList<String>(tables);
    }
 
+
     public void createCPT() {
        cpt=new CPT(name,outcomes,fathers,tables);
     }

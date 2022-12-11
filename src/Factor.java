@@ -83,15 +83,7 @@ public class Factor {
 
    }
 
-    /**
-     * The function receive two factors and join them to one union factor
-     * @param f1 the first factor to join
-     * @param f2 the second factor to join
-     * @return the new factor
-     */
-   public Factor join(Factor f1, Factor f2){
-       return new Factor(f1,f2);
-   }
+
 
     /**
      * The function receives an array of strings and if the array is equal to the array in the table
@@ -209,14 +201,13 @@ public class Factor {
      * @return the index of the variable
      * @throws Exception if index not found
      */
-            public int indexVarName (String varName) {
-                for (int i = 0; i < varFactor.size(); i++) {
-                    if (varName.equals(varFactor.get(i).getName()))
-                        return i;
+    public int indexVarName (String varName) {
+        for (int i = 0; i < varFactor.size(); i++) {
+            if (varName.equals(varFactor.get(i).getName()))
+                return i;
                 }
-                return -1;
+        return -1;
             }
-
             public ArrayList<Double> getProb () {
                 return prob;
             }

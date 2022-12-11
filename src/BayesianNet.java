@@ -19,7 +19,7 @@ public class BayesianNet {
         ArrayList<String>tempNames=xmlFile.getVariableName();
 
         for(String name: tempNames) {
-            if (!isExistByName(name))
+            if (!isExistByName(arrVariables,name))
                 arrVariables.add(new Variable(name, xmlFile.getOutcomes(name), xmlFile.getFathers(name), xmlFile.getTables(name), this));
         }
 
@@ -188,56 +188,127 @@ public class BayesianNet {
     }
     public String variableEliminationABC(ArrayList<String> query){
         ArrayList<Variable> hidden= getHidden(query);
-//        ArrayList<String> evidence=new ArrayList<>(query);
-//        evidence.remove(0);
-//        evidence.remove(0);
 
         //need to add function of remove variable that not have effect on the query
 
+        //Remove irrelevant outcomes of evidence
         for (int i=2;i< query.size();i=i+2){
-            
+            for(Factor f:this.arrFactor){
+                f.removeEvidenceOutcomes(query.get(i),query.get(i+1));
+            }
         }
 
-        return "";
+        //Sort the hidden array alphabetical
+        sortArrAlphabetical(hidden);
+
+        //
+        for (Variable hid: hidden){
+            ArrayList<Factor> temp= new ArrayList<Factor>();
+
+            //Creates an array for all the factors that contain the hidden
+            for (int i=0;i<arrFactor.size();i++) {
+                if (this.isExistByName(arrFactor.get(i).getVarFactor(), hid.getName())) {
+                    temp.add(arrFactor.get(i));
+                    arrFactor.remove(i);
+                    i--;
+                }
+            }
+
+            //Joins them by size until one factor remains
+            sortFactorSizeAlphabetical(temp);
+
+            while(temp.size()>1){
+                temp.add(join(temp.get(0),temp.get(1)));
+                temp.remove(0);
+                temp.remove(0);
+                sortFactorSizeAlphabetical(temp);
+            }
+
+            temp.get(0).eliminate(hid.getName());
+            arrFactor.add(temp.get(0));
+        }
+
+        return ""+normalResult(arrFactor.get(0),query.get(1));
+    }
+    public double normalResult(Factor f,String qOutcome){
+        double sum=0;
+        double queryOutcome=0;
+        for(int i=0;i<f.getProb().size();i++){
+            sum=sum+f.getProb().get(i);
+            if(f.getFactorTab().get(i).get(0).equals(qOutcome))
+                queryOutcome=f.getProb().get(i);
+        }
+
+        return queryOutcome/sum;
+    }
+    /**
+     * The function receive two factors and join them to one union factor
+     * @param f1 the first factor to join
+     * @param f2 the second factor to join
+     * @return the new factor
+     */
+    public Factor join(Factor f1, Factor f2){
+        return new Factor(f1,f2);
+    }
+
+    public void sortArrAlphabetical(ArrayList<Variable> arr){
+        for(int i=0;i< arr.size();i++){
+            int min=getASCIIValString(arr.get(i).getName());
+            for(int j=i+1;j< arr.size();j++) {
+                if (getASCIIValString(arr.get(j).getName()) < min) {
+                    min=getASCIIValString(arr.get(j).getName());
+                    swapVar(arr, i, j);
+                }
+            }
+        }
     }
 
     /**
      * This function sort the Factors by their size
      * If the Factor at the same size the function sort by the ASCII value's variable
      */
-    public void sortFactorAlphabetical(){
-        for(int i=0;i< arrFactor.size();i++){
-            int min=getASCIIValue(arrFactor.get(i));
-            for(int j=i+1;j< arrFactor.size();j++) {
-                if (getASCIIValue(arrFactor.get(j)) < min) {
-                    min=getASCIIValue(arrFactor.get(j));
-                    swap(arrFactor, i, j);
+    public void sortFactorSizeAlphabetical(ArrayList<Factor> arr){
+        for(int i=0;i< arr.size();i++){
+            int min=getASCIIVal(arr.get(i).getVarFactor());
+            for(int j=i+1;j< arr.size();j++) {
+                if (getASCIIVal(arr.get(j).getVarFactor()) < min) {
+                    min=getASCIIVal(arr.get(j).getVarFactor());
+                    swapFac(arr, i, j);
                 }
             }
         }
-        for(int i=0;i< arrFactor.size();i++){
-            int min=arrFactor.get(i).getFactorTab().size()*arrFactor.get(i).getVarFactor().size();
-            for(int j=i+1;j< arrFactor.size();j++) {
-                if (arrFactor.get(j).getFactorTab().size() * arrFactor.get(j).getVarFactor().size() < min) {
-                    min=arrFactor.get(j).getFactorTab().size() * arrFactor.get(j).getVarFactor().size();
-                    swap(arrFactor, i, j);
+        for(int i=0;i< arr.size();i++){
+            int min=arr.get(i).getFactorTab().size()*arr.get(i).getVarFactor().size();
+            for(int j=i+1;j< arr.size();j++) {
+                if (arr.get(j).getFactorTab().size() * arr.get(j).getVarFactor().size() < min) {
+                    min=arr.get(j).getFactorTab().size() * arr.get(j).getVarFactor().size();
+                    swapFac(arr, i, j);
                 }
             }
         }
-
     }
 
     /**
-     * The function return the ASCII value of factor by his Variables
-     * @param f the factor
+     * The function return the ASCII value of arr by his Variables
+     * @param arr the factor
      * @return the ASCII value
      */
-    public int getASCIIValue(Factor f){
+    public int getASCIIVal(ArrayList<Variable> arr){
         int asciiVal=1;
-        for(Variable v: f.getVarFactor()){
-            for(int i=0;i<v.getName().length();i++){
-            asciiVal=asciiVal*v.getName().charAt(i);
+        for(Variable v: arr){
+            asciiVal=asciiVal*getASCIIValString(v.getName());
+        }
+        return asciiVal;
     }
+    /**
+     * return ascii value of string
+     * @param str the string
+     * @return scii value of string
+     */
+    public int getASCIIValString(String str){
+        int asciiVal=1;
+        for(int i=0;i<str.length();i++){
+            asciiVal=asciiVal*str.charAt(i);
         }
         return asciiVal;
     }
@@ -248,8 +319,19 @@ public class BayesianNet {
      * @param i index to swap
      * @param j index to swap
      */
-    public void swap(ArrayList<Factor> arr,int i,int j){
+    public void swapFac(ArrayList<Factor> arr,int i,int j){
         Factor temp=arr.get(i);
+        arr.set(i,arr.get(j));
+        arr.set(j,temp);
+    }
+    /**
+     * The function swap the Variables int the array
+     * @param arr the array
+     * @param i index to swap
+     * @param j index to swap
+     */
+    public void swapVar(ArrayList<Variable> arr,int i,int j){
+        Variable temp=arr.get(i);
         arr.set(i,arr.get(j));
         arr.set(j,temp);
     }
@@ -272,9 +354,9 @@ public class BayesianNet {
      *Return if variable exist in the bayesian network
      */
 
-    public boolean isExistByName(String name ){
-        if(arrVariables!=null) {
-            for (Variable v1 : arrVariables) {
+    public boolean isExistByName(ArrayList<Variable> arr,String name ){
+        if(arr!=null) {
+            for (Variable v1 : arr) {
                 if (v1.getName().equals(name))
                     return true;
             }

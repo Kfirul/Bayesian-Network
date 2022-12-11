@@ -82,6 +82,23 @@ public class Factor {
        probFit(f2,arrIndex);
 
    }
+
+    /**
+     * The function receive two factors and join them to one union factor
+     * @param f1 the first factor to join
+     * @param f2 the second factor to join
+     * @return the new factor
+     */
+   public Factor join(Factor f1, Factor f2){
+       return new Factor(f1,f2);
+   }
+
+    /**
+     * The function receives an array of strings and if the array is equal to the array in the table
+     * we multiply the desired position in the prob of the array
+     * @param f the factor
+     * @param arrIndex the array that include the indexes we need to compare
+     */
     public void probFit(Factor f,ArrayList<Integer> arrIndex){
         for(int i=0;i<f.getFactorTab().size();i++){
             for(int j=0;j<this.factorTab.size();j++) {
@@ -114,6 +131,12 @@ public class Factor {
                    return true;
        return false;
    }
+
+    /**
+     * Return an array with the indexes that we need to go over in the table of the factor
+     * @param f the Factor we create for him array
+     * @return array of index
+     */
   public ArrayList<Integer> createArrIndex(Factor f){
       ArrayList<Integer>arrIndex=new ArrayList<>();
       for (int i=0;i<f.getVarFactor().size();i++)
@@ -140,6 +163,11 @@ public class Factor {
             removeCol(index);
         }
    }
+
+    /**
+     * Take a factor and sum out a variable - marginalization
+     * @param varName the variable's name
+     */
 
     public void eliminate(String varName)  {
        int indexVar=indexVarName(varName);

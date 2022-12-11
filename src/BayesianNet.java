@@ -67,7 +67,7 @@ public class BayesianNet {
             }
         }
         if(func=='1') return simpleDeduction(query);
-        else if (func=='2') return variableEliminationABC();
+        else if (func=='2') return variableEliminationABC(query);
         return "function 3";
     }
 
@@ -186,7 +186,18 @@ public class BayesianNet {
         }
         return simpleDec;
     }
-    public String variableEliminationABC(){
+    public String variableEliminationABC(ArrayList<String> query){
+        ArrayList<Variable> hidden= getHidden(query);
+//        ArrayList<String> evidence=new ArrayList<>(query);
+//        evidence.remove(0);
+//        evidence.remove(0);
+
+        //need to add function of remove variable that not have effect on the query
+
+        for (int i=2;i< query.size();i=i+2){
+            
+        }
+
         return "";
     }
 

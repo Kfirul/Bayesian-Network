@@ -184,15 +184,31 @@ public class BayesianNet {
         }
         return simpleDec;
     }
+
+    /**
+     *
+     * @param query
+     * @return
+     */
     public String variableEliminationABC(ArrayList<String> query){
         ArrayList<Variable> hidden= getHidden(query);
+        int countMul=0;
+        int countPlus=0;
 
-        //need to add function of remove variable that not have effect on the query
+        //Remove variables that not have effect on the query
+        removeIrrelevantVariables(query);
 
         //Remove irrelevant outcomes of evidence
         for (int i=2;i< query.size();i=i+2){
             for(Factor f:this.arrFactor){
                 f.removeEvidenceOutcomes(query.get(i),query.get(i+1));
+            }
+        }
+
+        for(int i=0;i<arrFactor.size();i++){
+            if(arrFactor.get(i).getFactorTab().size()==1){
+                arrFactor.remove(i);
+                i--;
             }
         }
 
@@ -219,21 +235,27 @@ public class BayesianNet {
                 temp.add(join(temp.get(0),temp.get(1)));
                 temp.remove(0);
                 temp.remove(0);
+                countMul=countMul+temp.get(temp.size()-1).getFactorTab().size();
                 sortFactorSizeAlphabetical(temp);
             }
-
-            temp.get(0).eliminate(hid.getName());
-            arrFactor.add(temp.get(0));
+            if(temp.size()>0) {
+                temp.get(0).eliminate(hid.getName());
+                countPlus=countPlus+temp.get(0).getFactorTab().size()*(hid.getOutcomes().size()-1);
+                arrFactor.add(temp.get(0));
+            }
         }
+
         //Joins the query factors by size until one factor remains
         while(arrFactor.size()>1){
             arrFactor.add(join(arrFactor.get(0),arrFactor.get(1)));
             arrFactor.remove(0);
             arrFactor.remove(0);
+            countMul=countMul+arrFactor.get(arrFactor.size()-1).getFactorTab().size();
             sortFactorSizeAlphabetical(arrFactor);
         }
+        countPlus=countPlus+arrFactor.get(0).getFactorTab().size()-1;
 
-        return ""+round5(normalResult(arrFactor.get(0),query.get(1)));
+        return ""+round5(normalResult(arrFactor.get(0),query.get(1)))+","+countPlus+","+countMul;
     }
 
     /**
@@ -352,7 +374,63 @@ public class BayesianNet {
         arr.set(j,temp);
     }
 
+    /**
+     *Removes variables that are not part of the query and are not an ancestor of the query or evidence
+     * @param query the query
+     */
+    public void removeIrrelevantVariables(ArrayList<String> query){
+        ArrayList<String> arrQueryVariables= new ArrayList<>();
+        for(int i=0;i< query.size();i=i+2)
+            arrQueryVariables.add(query.get(i));
+        int cLeavesNot;
+        do{
+             cLeavesNot=0;
+            for (Variable v: arrVariables){
+                if(isLeaf(v.getName()) && !isExistByNameStr(arrQueryVariables,v.getName()))
+                    arrFactor.remove(inFactor(v.getName()));
+            }
+            for(Variable v: arrVariables){
+                if(isLeaf(v.getName())&& !isExistByNameStr(arrQueryVariables,v.getName()))
+                    cLeavesNot++;
+            }
+        }
+        while(cLeavesNot>0);
 
+    }
+
+    /**
+     * Check if variable is leaf or not
+     * If he appears one time is leaf
+     * @param name the variable name to check
+     * @return true if leaf ,false if not
+     */
+    public Boolean isLeaf(String name){
+        int count=0;
+        for(Factor f:arrFactor){
+            for(Variable v:f.getVarFactor()){
+                if(name.equals(v.getName()))
+                    count++;
+            }
+        }
+        if(count==1)
+            return true;
+        return false;
+    }
+
+    /**
+     *
+     * @param name
+     * @return
+     */
+    public int inFactor(String name){
+        for(int i=0; i<arrFactor.size();i++) {
+            for (Variable v : arrFactor.get(i).getVarFactor()) {
+                if (name.equals(v.getName()))
+                    return i;
+            }
+        }
+        return -1;
+    }
 
     public void setBayesianNet(ArrayList<Variable> bayesianNet) {
         this.arrVariables = bayesianNet;
@@ -374,6 +452,15 @@ public class BayesianNet {
         if(arr!=null) {
             for (Variable v1 : arr) {
                 if (v1.getName().equals(name))
+                    return true;
+            }
+        }
+        return false;
+    }
+    public boolean isExistByNameStr(ArrayList<String> arr,String name ){
+        if(arr!=null) {
+            for (String s : arr) {
+                if (s.equals(name))
                     return true;
             }
         }

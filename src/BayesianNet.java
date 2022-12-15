@@ -1,4 +1,5 @@
 import java.util.ArrayList;
+import java.util.Arrays;
 
 public class BayesianNet {
 
@@ -212,10 +213,8 @@ public class BayesianNet {
             }
         }
 
-        //Sort the hidden array alphabetical
-        sortArrAlphabetical(hidden);
+        hidden.sort(null);
 
-        //
         for (Variable hid: hidden){
             ArrayList<Factor> temp= new ArrayList<Factor>();
 
@@ -273,6 +272,7 @@ public class BayesianNet {
             if(f.getFactorTab().get(i).get(0).equals(qOutcome))
                 queryOutcome=f.getProb().get(i);
         }
+
         return queryOutcome/sum;
     }
     /**
@@ -325,6 +325,79 @@ public class BayesianNet {
             }
         }
     }
+
+    /**
+     *
+     * @param query
+     * @return
+     */
+    public String variableEliminationMin(ArrayList<String> query){
+        ArrayList<Variable> hidden= getHidden(query);
+        int countMul=0;
+        int countPlus=0;
+
+        //Remove variables that not have effect on the query
+        removeIrrelevantVariables(query);
+
+        //Remove irrelevant outcomes of evidence
+        for (int i=2;i< query.size();i=i+2){
+            for(Factor f:this.arrFactor){
+                f.removeEvidenceOutcomes(query.get(i),query.get(i+1));
+            }
+        }
+
+        for(int i=0;i<arrFactor.size();i++){
+            if(arrFactor.get(i).getFactorTab().size()==1){
+                arrFactor.remove(i);
+                i--;
+            }
+        }
+
+       // hidden.sort(null);
+        //need to add function to sort the hidden
+
+        for (Variable hid: hidden){
+            ArrayList<Factor> temp= new ArrayList<Factor>();
+
+            //Creates an array for all the factors that contain the hidden
+            for (int i=0;i<arrFactor.size();i++) {
+                if (this.isExistByName(arrFactor.get(i).getVarFactor(), hid.getName())) {
+                    temp.add(arrFactor.get(i));
+                    arrFactor.remove(i);
+                    i--;
+                }
+            }
+
+            //Joins them by size until one factor remains
+            sortFactorSizeAlphabetical(temp);
+
+            while(temp.size()>1){
+                temp.add(join(temp.get(0),temp.get(1)));
+                temp.remove(0);
+                temp.remove(0);
+                countMul=countMul+temp.get(temp.size()-1).getFactorTab().size();
+                sortFactorSizeAlphabetical(temp);
+            }
+            if(temp.size()>0) {
+                temp.get(0).eliminate(hid.getName());
+                countPlus=countPlus+temp.get(0).getFactorTab().size()*(hid.getOutcomes().size()-1);
+                arrFactor.add(temp.get(0));
+            }
+        }
+
+        //Joins the query factors by size until one factor remains
+        while(arrFactor.size()>1){
+            arrFactor.add(join(arrFactor.get(0),arrFactor.get(1)));
+            arrFactor.remove(0);
+            arrFactor.remove(0);
+            countMul=countMul+arrFactor.get(arrFactor.size()-1).getFactorTab().size();
+            sortFactorSizeAlphabetical(arrFactor);
+        }
+        countPlus=countPlus+arrFactor.get(0).getFactorTab().size()-1;
+
+        return ""+round5(normalResult(arrFactor.get(0),query.get(1)))+","+countPlus+","+countMul;
+    }
+
 
     /**
      * The function return the ASCII value of arr by his Variables

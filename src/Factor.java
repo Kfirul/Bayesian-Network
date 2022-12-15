@@ -145,7 +145,7 @@ public class Factor {
    public void removeEvidenceOutcomes(String eviName,String eviOutcome){
         int index =indexVarName(eviName);
        //If evidence is exist in the factor , remove all the outcomes that not equal to eviOutcome
-        if(indexVarName(eviName)!=-1){
+        if(index!=-1){
             for(int i=0;i< factorTab.size();i++){
                 if(!factorTab.get(i).get(index).equals(eviOutcome)){
                     factorTab.remove(i);
@@ -169,12 +169,13 @@ public class Factor {
 
        //Remove the outcomes of varName from the factorTab
        removeCol(indexVar);
-
+   // int count=0;
        //Summing up the probs if the arrays of the outcomes are equal
        for(int i=0;i<factorTab.size();i++){
            for (int j = i+1; j < factorTab.size(); j++) {
                if(factorTab.get(i).equals(factorTab.get(j))){
                    double sum=prob.get(i)+prob.get(j);
+                  // count++;
                    prob.set(i,sum);
                    prob.remove(j);
                    factorTab.remove(j);
@@ -182,6 +183,7 @@ public class Factor {
                }
            }
        }
+        //System.out.println("sum:" + count);
     }
 
     /**

@@ -1,7 +1,8 @@
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Comparator;
 
-public class Variable {
+public class Variable implements Comparable <Variable> {
    private String name;
    private ArrayList<String> outcomes=new ArrayList<String>();
    private ArrayList<Variable> fathers=new ArrayList<Variable>();
@@ -79,6 +80,9 @@ public class Variable {
       if(this.name==v.name && this.bn==v.bn && this.outcomes.equals(v.outcomes))
          return true;
       return false;
+   }
+   public int compareTo(Variable v){
+      return (this.name.compareTo(v.name));
    }
    public ArrayList<String> getListOfFathers() {
       return listOfFathers;

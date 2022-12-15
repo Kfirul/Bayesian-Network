@@ -1,28 +1,36 @@
-import java.io.BufferedReader;
-import java.io.FileReader;
-import java.io.IOException;
+import java.io.*;
 import java.util.ArrayList;
 
 public class ReadTxtFile {
 
 
-    public String readText(String fileName){
-        String query="";
+    public static void main(String[] args) {
+    String fileName ="";
+
         try {
             FileReader ffw = new FileReader(fileName);
             BufferedReader bbw = new BufferedReader(ffw);
             String curr = bbw.readLine();
-            curr = bbw.readLine();
+            //ReadXmlFile xml=new ReadXmlFile(curr);
+            //BayesianNet bayesianNet= new BayesianNet(xml);
 
-            // while (curr != null) {
-                query= curr;
-            //}
-        }
-        catch(IOException e){
+            while (curr != null) {
+                curr = bbw.readLine();
+                // BayesianNet bayesianNetCopy= new BayesianNet(bayesianNet);
+                // bayesianNetCopy.chooseAlgo(queryValues(curr),whichAlgo(curr));
+                FileWriter fw = new FileWriter(fileName);
+                BufferedWriter bw = new BufferedWriter(fw);
+                //bw.append(bayesianNetCopy.chooseAlgo(queryValues(curr),whichAlgo(curr));+'\n');
+
+            }
+            bbw.close();
+
+
+        } catch (IOException e) {
             System.out.println(e);
         }
-        return query;
     }
+
 
     public ArrayList<String> queryValues(String query){
         ArrayList<String> queryArr=new ArrayList<String>();

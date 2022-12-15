@@ -42,10 +42,10 @@ public class Main {
 //        }
           ReadTxtFile t=new ReadTxtFile();
 
-         String str=t.readText("C:\\Users\\USER\\Desktop\\input.txt");
+         //String str=t.readText("C:\\Users\\USER\\Desktop\\input.txt");
       //  System.out.println(t.queryValues(str));
       //  System.out.println(net.simpleDeduction(t.queryValues(str)));
-          System.out.println(net.simpleDeduction(t.queryValues("P(B=T|J=T,M=T),1")));
+          System.out.println(net.simpleDeduction(t.queryValues("P(J=T|B=T),2")));
        // System.out.println(net.getArrFactor());
    //     System.out.println(net.getArrFactor().get(2).getFactorTab());
       //  System.out.println(net.getArrFactor().get(2).getProb());
@@ -82,7 +82,7 @@ public class Main {
 //        System.out.println("--------\n");
 //        System.out.println(h);
 
-          System.out.println(net.variableEliminationABC(t.queryValues("P(B=T|J=T,M=T),1")));
+          System.out.println(net.variableEliminationABC(t.queryValues("P(J=T|B=T),2")));
 
     }
        // System.out.println(xmlFile.getTables(a.get(2)).size());

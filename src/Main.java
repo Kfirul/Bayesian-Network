@@ -7,12 +7,12 @@ import java.util.ArrayList;
 
 public class Main {
     public static void main(String[] args) throws Exception {
-        ReadXmlFile xmlFile = new ReadXmlFile("C:\\Users\\USER\\Desktop\\alarm_net.xml");
-        ReadXmlFile xmlFile2 = new ReadXmlFile("C:\\Users\\USER\\Desktop\\big_net.xml");
+       // ReadXmlFile xmlFile = new ReadXmlFile("C:\\Users\\USER\\Desktop\\alarm_net.xml");
+      //  ReadXmlFile xmlFile2 = new ReadXmlFile("C:\\Users\\USER\\Desktop\\big_net.xml");
 
         // xmlFile.getListVariable();
 
-        ArrayList<String> a = xmlFile.getVariableName();
+      //  ArrayList<String> a = xmlFile.getVariableName();
 ////        System.out.println(a);
 //        for (int i = 0; i < a.size(); i++) {
 ////            System.out.println("Variable : " +a.get(i));
@@ -24,7 +24,7 @@ public class Main {
 ////            System.out.println("Tables : "+d);
 ////            System.out.println("----------------");
 //
-             BayesianNet net=new BayesianNet(xmlFile);
+          //   BayesianNet net=new BayesianNet(xmlFile);
         // System.out.println( net.getVariableByName("D1").getCpt());
 //        ArrayList<String>z=new ArrayList<>();
 //        z.add("B");
@@ -40,12 +40,12 @@ public class Main {
 //            ArrayList<String> z = new ArrayList<String>(b);
 //            System.out.println(z);
 //        }
-          ReadTxtFile t=new ReadTxtFile();
+        // ReadTxtFile t=new ReadTxtFile();
 
          //String str=t.readText("C:\\Users\\USER\\Desktop\\input.txt");
       //  System.out.println(t.queryValues(str));
       //  System.out.println(net.simpleDeduction(t.queryValues(str)));
-          System.out.println(net.simpleDeduction(t.queryValues("P(J=T|B=T),2")));
+       //   System.out.println(net.simpleDeduction(t.queryValues("P(J=T|B=T),2")));
        // System.out.println(net.getArrFactor());
    //     System.out.println(net.getArrFactor().get(2).getFactorTab());
       //  System.out.println(net.getArrFactor().get(2).getProb());
@@ -82,8 +82,13 @@ public class Main {
 //        System.out.println("--------\n");
 //        System.out.println(h);
 
-          System.out.println(net.variableEliminationABC(t.queryValues("P(J=T|B=T),2")));
-
+         // System.out.println(net.variableEliminationABC(t.queryValues("P(J=T|B=T),2")));
+ArrayList <String> b=new ArrayList<>();
+b.add("kkk");
+ArrayList<String>c=new ArrayList<>(b);
+c.remove(0);
+        System.out.println(b);
+        System.out.println(c);
     }
        // System.out.println(xmlFile.getTables(a.get(2)).size());
 

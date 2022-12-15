@@ -5,6 +5,16 @@ public class Factor {
     private ArrayList<Double> prob=new ArrayList<Double>();
     private ArrayList<ArrayList<String>> factorTab=new ArrayList<ArrayList<String>>();
 
+    public Factor(Factor f){
+            this.varFactor=new ArrayList<>(f.varFactor);
+            this.prob=new ArrayList<>(f.prob);
+
+            factorTab=new ArrayList<>();
+            for(int i=0;i<f.getFactorTab().size();i++)
+                factorTab.add(new ArrayList<>(f.getFactorTab().get(i)));
+
+
+    }
 
    public Factor(Variable v){
        String [][] cptCopy=v.getCpt().getTruthTable();

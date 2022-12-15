@@ -6,6 +6,7 @@ import javax.xml.parsers.DocumentBuilderFactory;
 import javax.xml.parsers.ParserConfigurationException;
 import java.io.File;
 import java.io.IOException;
+import java.net.URL;
 import java.util.ArrayList;
 
 
@@ -14,9 +15,13 @@ public class ReadXmlFile {
     private BayesianNet bayesianNet;
     public ReadXmlFile(String xmlFileName) throws ParserConfigurationException, IOException, SAXException {
         try {
+//            URL fileURL = Main.class.getResource(xmlFileName);
+//            File URI = new File(fileURL.toURI());
             File xmlFile = new File(xmlFileName);
+
             DocumentBuilderFactory dbf = DocumentBuilderFactory.newInstance();
             DocumentBuilder builder = dbf.newDocumentBuilder();
+           // doc = builder.parse(URI);
             doc = builder.parse(xmlFile);
             doc.getDocumentElement();
         }

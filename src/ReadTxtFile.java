@@ -1,38 +1,55 @@
+import org.xml.sax.SAXException;
+
+import javax.xml.parsers.ParserConfigurationException;
 import java.io.*;
+import java.net.URISyntaxException;
+import java.net.URL;
+
 import java.util.ArrayList;
 
 public class ReadTxtFile {
 
 
     public static void main(String[] args) {
-    String fileName ="";
 
         try {
-            FileReader ffw = new FileReader(fileName);
+
+            URL fileURL = ReadTxtFile.class.getResource("input.txt");
+            File text = new File(fileURL.toURI());
+            FileReader ffw = new FileReader(text);
             BufferedReader bbw = new BufferedReader(ffw);
             String curr = bbw.readLine();
-            //ReadXmlFile xml=new ReadXmlFile(curr);
-            //BayesianNet bayesianNet= new BayesianNet(xml);
+            System.out.println(curr);
+            ReadXmlFile xml=new ReadXmlFile(curr);
+            BayesianNet bayesianNet= new BayesianNet(xml);
 
+            FileWriter fw = new FileWriter("output.txt");
+            BufferedWriter bw = new BufferedWriter(fw);
+            curr = bbw.readLine();
             while (curr != null) {
+                bw.append(bayesianNet.chooseAlgo(queryValues(curr),whichAlgo(curr))+'\n');
                 curr = bbw.readLine();
-                // BayesianNet bayesianNetCopy= new BayesianNet(bayesianNet);
-                // bayesianNetCopy.chooseAlgo(queryValues(curr),whichAlgo(curr));
-                FileWriter fw = new FileWriter(fileName);
-                BufferedWriter bw = new BufferedWriter(fw);
-                //bw.append(bayesianNetCopy.chooseAlgo(queryValues(curr),whichAlgo(curr));+'\n');
-
             }
             bbw.close();
-
+            bw.close();
 
         } catch (IOException e) {
             System.out.println(e);
+        } catch (URISyntaxException e) {
+            throw new RuntimeException(e);
+        } catch (ParserConfigurationException e) {
+            throw new RuntimeException(e);
+        } catch (SAXException e) {
+            throw new RuntimeException(e);
         }
     }
 
-
-    public ArrayList<String> queryValues(String query){
+    /**
+     *
+     * @param query
+     * @return
+     */
+    public static ArrayList<String> queryValues(String query){
         ArrayList<String> queryArr=new ArrayList<String>();
         String str="";
         for(int i=2;i<query.length() && query.charAt(i)!=')';i++){
@@ -50,11 +67,11 @@ public class ReadTxtFile {
 
     /**
      *
-     * @param query
+     * @param query received from input file
      * @return the function we need to use
      *
      */
-    public char whichAlgo(String query){
+    public static char whichAlgo(String query){
         return query.charAt(query.length()-1);
     }
 }

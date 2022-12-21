@@ -13,7 +13,6 @@ public class Factor {
             for(int i=0;i<f.getFactorTab().size();i++)
                 factorTab.add(new ArrayList<>(f.getFactorTab().get(i)));
 
-
     }
 
    public Factor(Variable v){
@@ -223,30 +222,26 @@ public class Factor {
                 }
         return -1;
             }
-            public ArrayList<Double> getProb () {
-                return prob;
-            }
 
-            public void setProb (ArrayList < Double > prob) {
-                this.prob = prob;
+    //Getters
+
+    public ArrayList<Double> getProb () {
+                return prob;
             }
 
             public ArrayList<ArrayList<String>> getFactorTab () {
                 return factorTab;
             }
 
-            public void setFactorTab (ArrayList < ArrayList < String >> factorTab) {
-                this.factorTab = factorTab;
-            }
-
             public ArrayList<Variable> getVarFactor () {
                 return varFactor;
             }
 
-            public void setVarFactor (ArrayList < Variable > varFactor) {
-                this.varFactor = varFactor;
-            }
-
+    /**
+     * Print the Factor
+     * @return the Factor
+     *
+     */
             public String toString () {
                 System.out.println("Titels: ");
                 for (Variable v:varFactor) {

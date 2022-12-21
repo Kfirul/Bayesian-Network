@@ -1,11 +1,17 @@
 import java.util.ArrayList;
 
+/**
+ * This class represents the Bayesian Network
+ */
 public class BayesianNet {
 
     private ArrayList<Variable> arrVariables= new ArrayList<Variable>();
     private ArrayList<Factor> arrFactor=new ArrayList<Factor>();
 
-
+    /**
+     * A constructor that receives xml and builds a network from it according to the data in xml
+     * @param xmlFile that draw data from it
+     */
     public BayesianNet(ReadXmlFile xmlFile){
         ArrayList<String>tempNames=xmlFile.getVariableName();
 
@@ -22,9 +28,11 @@ public class BayesianNet {
                 v.getFathers().add(v1);
             }
         }
+        //Create cpt according the information
         for(Variable v: arrVariables) {
             v.createCPT();
         }
+        //Create arr of factors
         for (Variable v:arrVariables) {
             arrFactor.add(new Factor(v));
         }
@@ -63,7 +71,7 @@ public class BayesianNet {
 
     /**
      *
-     *
+     * This function represents the Simple Deduction algorithm
      *
      */
 
@@ -102,6 +110,7 @@ public class BayesianNet {
      * Returns the hidden variables for a given query
      * @param query
      * @return the hidden array
+     *
      */
     public ArrayList<Variable> getHidden(ArrayList<String> query){
         ArrayList<Variable> hidden=new ArrayList<Variable>();
@@ -159,8 +168,8 @@ public class BayesianNet {
     }
 
     /**
-     *
      * Return the result of combination by their CPT
+     *
      */
 
     public double resultsCombine(ArrayList<ArrayList<String>> combine){
@@ -176,9 +185,11 @@ public class BayesianNet {
     }
 
     /**
+     * This function represents the Variable Elimination algorithm
+     * @param query the query to answer
+     * @param function to use 2 or 3
+     * @return the result
      *
-     * @param query
-     * @return
      */
     public String variableEliminationABC(ArrayList<String> query,char function){
         ArrayList<Variable> hidden= getHidden(query);
@@ -258,10 +269,11 @@ public class BayesianNet {
     }
 
     /**
+     * Normalizes the answer
+     * @param f the final factor
+     * @param qOutcome the outcome to find
+     * @return the normal result
      *
-     * @param f
-     * @param qOutcome
-     * @return
      */
 
     public double normalResult(Factor f,String qOutcome){
@@ -280,6 +292,7 @@ public class BayesianNet {
      * @param f1 the first factor to join
      * @param f2 the second factor to join
      * @return the new factor
+     *
      */
     public Factor join(Factor f1, Factor f2){
         return new Factor(f1,f2);
@@ -289,6 +302,7 @@ public class BayesianNet {
     /**
      * This function sort the Factors by their size
      * If the Factor at the same size the function sort by the ASCII value's variable
+     *
      */
     public void sortFactorSizeAlphabetical(ArrayList<Factor> arr){
         for(int i=0;i< arr.size();i++){
@@ -316,6 +330,7 @@ public class BayesianNet {
      * The function return the ASCII value of arr by his Variables
      * @param arr the factor
      * @return the ASCII value
+     *
      */
     public int getASCIIVal(ArrayList<Variable> arr){
         int asciiVal=1;
@@ -328,6 +343,7 @@ public class BayesianNet {
      * return ascii value of string
      * @param str the string
      * @return scii value of string
+     *
      */
     public int getASCIIValString(String str){
         int asciiVal=1;
@@ -342,6 +358,7 @@ public class BayesianNet {
      * @param arr the array
      * @param i index to swap
      * @param j index to swap
+     *
      */
     public void swapFac(ArrayList<Factor> arr,int i,int j){
         Factor temp=arr.get(i);
@@ -353,6 +370,7 @@ public class BayesianNet {
      * @param arr the array
      * @param i index to swap
      * @param j index to swap
+     *
      */
     public void swapVar(ArrayList<Variable> arr,int i,int j){
         Variable temp=arr.get(i);
@@ -363,6 +381,7 @@ public class BayesianNet {
     /**
      *Removes variables that are not part of the query and are not an ancestor of the query or evidence
      * @param query the query
+     *
      */
     public void removeIrrelevantVariables(ArrayList<String> query){
         ArrayList<String> arrQueryVariables= new ArrayList<>();
@@ -389,6 +408,7 @@ public class BayesianNet {
      * If he appears one time is leaf
      * @param name the variable name to check
      * @return true if leaf ,false if not
+     *
      */
     public int isLeaf(String name){
         int count=0;
@@ -402,9 +422,10 @@ public class BayesianNet {
     }
 
     /**
+     * Return the index of variable int the factor, if not at the factor return -1
+     * @param name's Variable
+     * @return the index
      *
-     * @param name
-     * @return
      */
     public int inFactor(String name){
         for(int i=0; i<arrFactor.size();i++) {
@@ -420,6 +441,7 @@ public class BayesianNet {
 
     /**
      *Return if variable exist in the array
+     *
      */
 
     public boolean isExistByName(ArrayList<Variable> arr,String name ){
@@ -431,6 +453,13 @@ public class BayesianNet {
         }
         return false;
     }
+
+    /**
+     *
+     * @param arr to check if the string is there
+     * @param name the String to found
+     * @return True if found otherwise False
+     */
     public boolean isExistByNameStr(ArrayList<String> arr,String name ){
         if(arr!=null) {
             for (String s : arr) {
@@ -447,7 +476,7 @@ public class BayesianNet {
     public void sortMin(ArrayList<Variable>hidden){
         for(int i=0;i< hidden.size();i++){
             int min=isLeaf(hidden.get(i).getName());
-            
+
             for(int j=i+1;j< hidden.size();j++){
                 if(min<isLeaf(hidden.get(j).getName())){
                     min=isLeaf(hidden.get(j).getName());
@@ -461,8 +490,8 @@ public class BayesianNet {
 
 
     /**
-     *
      * Return the variable by his name at the bayesian network
+     *
      */
     public Variable getVariableByName(String name){
         for (Variable v1:arrVariables) {
@@ -471,12 +500,21 @@ public class BayesianNet {
         }
         return null;
     }
+
+    /**
+     * The function round the number 5 digits after the point
+     * @param d the number to round
+     * @return the round number
+     *
+     */
     public double round5(double d){
         d=100000*d;
         d=Math.round(d);
         d=d/100000;
         return d;
     }
+
+    // Getters
 
     public ArrayList<Variable> getArrVariables() {
         return arrVariables;
@@ -487,6 +525,11 @@ public class BayesianNet {
         return arrFactor;
     }
 
+    /**
+     * Print the net
+     * @return the net
+     *
+     */
 
     @Override
     public String toString() {

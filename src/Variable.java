@@ -11,14 +11,6 @@ public class Variable implements Comparable <Variable> {
    private CPT cpt;
    private BayesianNet bn;
 
-   public Variable(String name){
-
-      this.name=name;
-      outcomes=null;
-      fathers=null;
-      cpt=null;
-      bn=null;
-}
 
    public Variable(String name, ArrayList<String> outcomes, ArrayList<String> fathers, ArrayList<String> tables, BayesianNet bn){
       this.name=name;
@@ -28,71 +20,62 @@ public class Variable implements Comparable <Variable> {
       this.tables=new ArrayList<String>(tables);
    }
 
-
+   /**
+    * Create cpt
+    * 
+    */
     public void createCPT() {
        cpt=new CPT(name,outcomes,fathers,tables);
     }
+//Getters
 
    public String getName() {
       return name;
    }
-   public void setName(String name) {
-      this.name = name;
-   }
+
 
    public ArrayList<String> getOutcomes() {
       return outcomes;
    }
 
-   public void setOutcomes(ArrayList<String> outcomes) {
-      this.outcomes = outcomes;
-   }
 
    public ArrayList<Variable> getFathers() {
       return fathers;
    }
 
-   public void setFathers(ArrayList<Variable> fathers) {
-      this.fathers = fathers;
-   }
 
    public CPT getCpt() {
       return cpt;
    }
 
 
-
    public BayesianNet getBn() {
       return bn;
    }
 
-   public void setBn(BayesianNet bn) {
-      this.bn = bn;
-   }
    public ArrayList<String> getTables() {
       return tables;
    }
 
-   public void setTables(ArrayList<String> tables) {
-      this.tables = tables;
-   }
-   public boolean equals(Variable v) {
-      if(this.name==v.name && this.bn==v.bn && this.outcomes.equals(v.outcomes))
-         return true;
-      return false;
-   }
-   public int compareTo(Variable v){
-      return (this.name.compareTo(v.name));
-   }
+
    public ArrayList<String> getListOfFathers() {
       return listOfFathers;
    }
-
-   public void setListOfFathers(ArrayList<String> listOfFathers) {
-      this.listOfFathers = listOfFathers;
+   /**
+    * Sort the variables by names
+    * @param v the object to be compared.
+    * @return
+    *
+    */
+   public int compareTo(Variable v){
+      return (this.name.compareTo(v.name));
    }
 
-
+   /**
+    * Print the variable
+    * @return the variable
+    *
+    */
    @Override
    public String toString() {
       ArrayList<String> listOfFathersCheck=new ArrayList<>();

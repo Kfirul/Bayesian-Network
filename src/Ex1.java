@@ -7,14 +7,14 @@ import java.net.URL;
 
 import java.util.ArrayList;
 
-public class ReadTxtFile {
+public class Ex1 {
 
 
     public static void main(String[] args) {
 
         try {
 
-            URL fileURL = ReadTxtFile.class.getResource("input.txt");
+            URL fileURL = Ex1.class.getResource("input.txt");
             File text = new File(fileURL.toURI());
             FileReader ffw = new FileReader(text);
             BufferedReader bbw = new BufferedReader(ffw);
@@ -45,9 +45,9 @@ public class ReadTxtFile {
     }
 
     /**
-     *
-     * @param query
-     * @return
+     * Read the query and return arraylist of the query as the even cells are variables and the odds cells are outcomes of the variables
+     * @param query to answer
+     * @return arraylist of the query
      */
     public static ArrayList<String> queryValues(String query){
         ArrayList<String> queryArr=new ArrayList<String>();

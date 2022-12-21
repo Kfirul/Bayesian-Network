@@ -30,8 +30,11 @@ public class ReadXmlFile {
         }
     }
 
-
-
+    /**
+     * Return ArrayList of the Variable names
+     * @return ArrayList of the Variable names
+     *
+     */
     public ArrayList<String> getVariableName() {
         ArrayList<String> names = new ArrayList<String>();
         try {
@@ -52,6 +55,12 @@ public class ReadXmlFile {
 
     }
 
+    /**
+     * Return the outcomes for variable
+     * @param name's variable
+     * @return the outcomes for variable
+     *
+     */
     public ArrayList<String> getOutcomes(String name) {
         ArrayList<String> outcomes = new ArrayList<String>();
         try {
@@ -75,6 +84,13 @@ public class ReadXmlFile {
 
         return outcomes;
     }
+
+    /**
+     * Return the fathers for variable
+     * @param name's variable
+     * @return the fathers for variable
+     *
+     */
     public ArrayList<String> getFathers(String name) {
         ArrayList<String> fathers = new ArrayList<String>();
         try {
@@ -97,7 +113,12 @@ public class ReadXmlFile {
         }
         return fathers;
     }
-
+    /**
+     * Return the tables for variable
+     * @param name's variable
+     * @return the tables for variable
+     *
+     */
     public ArrayList<String> getTables(String name) {
         ArrayList<String> tables = new ArrayList<String>();
         try {

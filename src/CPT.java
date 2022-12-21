@@ -1,11 +1,22 @@
 import java.util.ArrayList;
 import java.util.Arrays;
 
+/**
+ * This class represent the CPT
+ */
 public class CPT {
     
     private String[][]truthTable;
     private ArrayList<String> tables=new ArrayList<String>();
 
+    /**
+     * This constructor build the CPT
+     * @param nameVar the name of the variable
+     * @param outcomes the outcomes of the variable
+     * @param fathers the fathers of the variable
+     * @param tables the tables of the variable
+     *
+     */
     public CPT(String nameVar ,ArrayList<String> outcomes,ArrayList<Variable> fathers,ArrayList<String> tables){
         this.tables=new ArrayList<String>(tables);
         int loops= tables.size();
@@ -45,13 +56,12 @@ public class CPT {
         }
     }
 
+    // Getter
+
     public String[][] getTruthTable() {
         return truthTable;
     }
 
-    public void setCpt(String[][] truthTable) {
-        this.truthTable = truthTable;
-    }
 
     /**
      * Receives an arraylist of the query and returns an array with the values of Outcomes only

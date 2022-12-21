@@ -471,6 +471,9 @@ public class BayesianNet {
     }
 
     /**
+     * For function 3:
+     * This function sorts the hidden variables according to the number of
+     * times they appear in factors from the smallest to the largest
      *
      */
     public void sortMin(ArrayList<Variable>hidden){
@@ -484,10 +487,7 @@ public class BayesianNet {
                 }
             }
         }
-
-
     }
-
 
     /**
      * Return the variable by his name at the bayesian network

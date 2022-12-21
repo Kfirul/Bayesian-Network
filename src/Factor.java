@@ -1,20 +1,16 @@
 import java.util.ArrayList;
-
+/**
+ * This class represent the Factor
+ */
 public class Factor {
     private ArrayList<Variable> varFactor=new ArrayList<Variable>();
     private ArrayList<Double> prob=new ArrayList<Double>();
     private ArrayList<ArrayList<String>> factorTab=new ArrayList<ArrayList<String>>();
 
-    public Factor(Factor f){
-            this.varFactor=new ArrayList<>(f.varFactor);
-            this.prob=new ArrayList<>(f.prob);
-
-            factorTab=new ArrayList<>();
-            for(int i=0;i<f.getFactorTab().size();i++)
-                factorTab.add(new ArrayList<>(f.getFactorTab().get(i)));
-
-    }
-
+    /**
+     * This constructor build factor from variable CPT
+     * @param v the variable to build from
+     */
    public Factor(Variable v){
        String [][] cptCopy=v.getCpt().getTruthTable();
        for(int j=0;j<v.getFathers().size();j++){
@@ -33,6 +29,12 @@ public class Factor {
            }
        }
    }
+
+    /**
+     * This constructor get two Factors and join them to one factor
+     * @param f1 the first factor to join
+     * @param f2 the second factor to join
+     */
    public Factor(Factor f1, Factor f2){
 
         //Create new var factor arr of union between f1 & f2
@@ -92,13 +94,12 @@ public class Factor {
 
    }
 
-
-
     /**
      * The function receives an array of strings and if the array is equal to the array in the table
      * we multiply the desired position in the prob of the array
      * @param f the factor
      * @param arrIndex the array that include the indexes we need to compare
+     *
      */
     public void probFit(Factor f,ArrayList<Integer> arrIndex){
         for(int i=0;i<f.getFactorTab().size();i++){
@@ -117,8 +118,8 @@ public class Factor {
      * @param arr to compare
      * @param arrFromTab to compare
      * @return true if equals otherwise false
+     *
      */
-
 
     public boolean equalArrByIndex(ArrayList<Integer>arrIndex,ArrayList<String> arr,ArrayList<String>arrFromTab){
        ArrayList<String> tempArr=new ArrayList<>();

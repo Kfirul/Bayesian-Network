@@ -9,10 +9,20 @@ import java.io.IOException;
 import java.net.URL;
 import java.util.ArrayList;
 
-
+/**
+ * This class reads the XML files
+ * I used the code that appears on this site to read a xml file
+ * https://initialcommit.com/blog/how-to-read-xml-file-in-java
+ *
+ */
 public class ReadXmlFile {
     private Document doc;
     private BayesianNet bayesianNet;
+
+    /**
+     *
+     * Read xmlFile
+     */
     public ReadXmlFile(String xmlFileName) throws ParserConfigurationException, IOException, SAXException {
         try {
 //            URL fileURL = Main.class.getResource(xmlFileName);

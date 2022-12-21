@@ -1,7 +1,9 @@
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Comparator;
-
+/**
+ * This class represent the Variable
+ */
 public class Variable implements Comparable <Variable> {
    private String name;
    private ArrayList<String> outcomes=new ArrayList<String>();
@@ -11,7 +13,13 @@ public class Variable implements Comparable <Variable> {
    private CPT cpt;
    private BayesianNet bn;
 
-
+   /**
+    * This constructor gets its information from the xml file
+    * @param name - the name of the node
+    * @param fathers - the givens nodes
+    * @param bn - the network we build
+    * @param outcomes - list of possible result (True, False, ect.)
+    */
    public Variable(String name, ArrayList<String> outcomes, ArrayList<String> fathers, ArrayList<String> tables, BayesianNet bn){
       this.name=name;
       this.bn=bn;
@@ -22,7 +30,7 @@ public class Variable implements Comparable <Variable> {
 
    /**
     * Create cpt
-    * 
+    *
     */
     public void createCPT() {
        cpt=new CPT(name,outcomes,fathers,tables);

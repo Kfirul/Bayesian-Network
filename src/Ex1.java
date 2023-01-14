@@ -9,7 +9,6 @@ import java.util.ArrayList;
 
 public class Ex1 {
 
-
     public static void main(String[] args) {
 
         try {
@@ -48,6 +47,7 @@ public class Ex1 {
      * Read the query and return arraylist of the query as the even cells are variables and the odds cells are outcomes of the variables
      * @param query to answer
      * @return arraylist of the query
+     * 
      */
     public static ArrayList<String> queryValues(String query){
         ArrayList<String> queryArr=new ArrayList<String>();

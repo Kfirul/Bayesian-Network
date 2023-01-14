@@ -25,13 +25,13 @@ public class ReadXmlFile {
      */
     public ReadXmlFile(String xmlFileName) throws ParserConfigurationException, IOException, SAXException {
         try {
-//            URL fileURL = Main.class.getResource(xmlFileName);
-//            File URI = new File(fileURL.toURI());
+            URL fileURL = Ex1.class.getResource(xmlFileName);
+            File URI = new File(fileURL.toURI());
             File xmlFile = new File(xmlFileName);
 
             DocumentBuilderFactory dbf = DocumentBuilderFactory.newInstance();
             DocumentBuilder builder = dbf.newDocumentBuilder();
-           // doc = builder.parse(URI);
+            doc = builder.parse(URI);
             doc = builder.parse(xmlFile);
             doc.getDocumentElement();
         }
@@ -62,7 +62,6 @@ public class ReadXmlFile {
             e.printStackTrace();
         }
             return names;
-
     }
 
     /**

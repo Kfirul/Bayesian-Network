@@ -1,12 +1,14 @@
 # Bayesian-Network-Project
-## This project is implementing Bayesian Network simple, deduction and Variable Elimination Algorithm.
+## This project is implementing Bayesian Network, simple deduction and Variable Elimination Algorithm.
 
-## Bayesian Network:
+## Bayesian Network
 A Bayesian network (also known as a Bayes network, Bayes net, belief network, or decision network)
 is a probabilistic graphical model that represents a set of variables and their conditional dependencies via a directed acyclic graph (DAG).
 Bayesian networks are ideal for taking an event that occurred and predicting the likelihood that any one of several possible known causes was the contributing factor.
 For example, a Bayesian network could represent the probabilistic relationships between diseases and symptoms.
 Given symptoms, the network can be used to compute the probabilities of the presence of various diseases. (wikipedia)
+![image](https://github.com/Kfirul/Bayesian-Network/assets/98819583/eb777a11-fa02-41c9-b626-fc32edf91efc)
+
 
 ## Simple Deduction
  In a Bayesian network, we have variables represented as nodes, and these variables can have dependencies on each other. The dependencies are represented by arrows between the nodes.
@@ -50,3 +52,6 @@ Shrinks a factor to a smaller one
 C. NORMALIZE
 Take every probability in the last factor and divide it with the sum of all probabilities in the factor (including the one we are dividing).
 The answer we are looking for is the probability of the query value.
+
+![image](https://github.com/Kfirul/Bayesian-Network/assets/98819583/e4a91751-18ba-4013-943f-eec6c1825665)
+
